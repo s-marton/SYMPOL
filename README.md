@@ -1,4 +1,4 @@
-# TreeRL
+# SYMPOL: Symbolic Tree-Based On-Policy \\ Reinforcement Learning
 
 ## Installing Requirements
 
