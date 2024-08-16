@@ -1,0 +1,215 @@
+Environments:
+
+CartPole-v1
+Acrobot-v1
+LunarLander-v2
+
+Pendulum-v1
+MountainCarContinuous-v0
+
+MiniGrid-Empty-Random-6x6-v0
+MiniGrid-DoorKey-5x5-v0
+MiniGrid-LavaGapS5-v0
+MiniGrid-LavaGapS7-v0
+MiniGrid-DistShift1-v0
+
+MiniGrid-DistShift4-v0
+
+
+python ppo.py --env_id Acrobot-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name TEST --exp_name TEST --use_best_config --dynamic_buffer
+________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+nohup python ppo_gymnax.py --env_id CartPole-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest --exp_name results_useBest --use_best_config --dynamic_buffer &
+nohup python ppo_gymnax.py --env_id Acrobot-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest --exp_name results_useBest --use_best_config --dynamic_buffer &
+nohup python ppo.py --env_id LunarLander-v2 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest --exp_name results_useBest --use_best_config --dynamic_buffer &
+
+nohup python ppo_gymnax.py --env_id Pendulum-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest --exp_name results_useBest --use_best_config --action_type continuous --dynamic_buffer &
+nohup python ppo_gymnax.py --env_id MountainCarContinuous-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest --exp_name results_useBest --use_best_config --action_type continuous --dynamic_buffer &
+
+
+nohup python ppo.py --env_id MiniGrid-Empty-Random-6x6-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest --exp_name results_useBest --use_best_config --dynamic_buffer &
+nohup python ppo.py --env_id MiniGrid-DoorKey-5x5-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest --exp_name results_useBest --use_best_config --dynamic_buffer &
+nohup python ppo.py --env_id MiniGrid-LavaGapS5-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest --exp_name results_useBest --use_best_config --dynamic_buffer &
+nohup python ppo.py --env_id MiniGrid-LavaGapS7-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest --exp_name results_useBest --use_best_config --dynamic_buffer &
+nohup python ppo.py --env_id MiniGrid-DistShift1-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest --exp_name results_useBest --use_best_config --dynamic_buffer &
+
+nohup python ppo.py --env_id MiniGrid-DistShift4-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest --exp_name results_useBest --use_best_config --dynamic_buffer &
+________________________________________________________________________________________________________________
+
+nohup python ppo_gymnax.py --env_id CartPole-v1 --track --gpu_number 0 --random_trials 5 --actor sdt --run_name SDT_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo_gymnax.py --env_id Acrobot-v1 --track --gpu_number 0 --random_trials 5 --actor sdt --run_name SDT_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id LunarLander-v2 --track --gpu_number 0 --random_trials 5 --actor sdt --run_name SDT_useBest --exp_name results_useBest --use_best_config &
+
+nohup python ppo_gymnax.py --env_id Pendulum-v1 --track --gpu_number 0 --random_trials 5 --actor sdt --run_name SDT_useBest --exp_name results_useBest --use_best_config --action_type continuous &
+nohup python ppo_gymnax.py --env_id MountainCarContinuous-v0 --track --gpu_number 0 --random_trials 5 --actor sdt --run_name SDT_useBest --exp_name results_useBest --use_best_config --action_type continuous &
+
+nohup python ppo.py --env_id MiniGrid-Empty-Random-6x6-v0 --track --gpu_number 0 --random_trials 5 --actor sdt --run_name SDT_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-DoorKey-5x5-v0 --track --gpu_number 0 --random_trials 5 --actor sdt --run_name SDT_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-LavaGapS5-v0 --track --gpu_number 0 --random_trials 5 --actor sdt --run_name SDT_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-LavaGapS7-v0 --track --gpu_number 0 --random_trials 5 --actor sdt --run_name SDT_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-DistShift1-v0 --track --gpu_number 0 --random_trials 5 --actor sdt --run_name SDT_useBest --exp_name results_useBest --use_best_config &
+
+nohup python ppo.py --env_id MiniGrid-DistShift4-v0 --track --gpu_number 0 --random_trials 5 --actor sdt --run_name SDT_useBest --exp_name results_useBest --use_best_config &
+
+________________________________________________________________________________________________________________
+
+nohup python ppo_gymnax.py --env_id CartPole-v1 --track --gpu_number 0 --random_trials 5 --actor d-sdt --run_name D-SDT_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo_gymnax.py --env_id Acrobot-v1 --track --gpu_number 0 --random_trials 5 --actor d-sdt --run_name D-SDT_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id LunarLander-v2 --track --gpu_number 0 --random_trials 5 --actor d-sdt --run_name D-SDT_useBest --exp_name results_useBest --use_best_config &
+
+nohup python ppo_gymnax.py --env_id Pendulum-v1 --track --gpu_number 0 --random_trials 5 --actor d-sdt --run_name D-SDT_useBest --exp_name results_useBest --use_best_config --action_type continuous &
+nohup python ppo_gymnax.py --env_id MountainCarContinuous-v0 --track --gpu_number 0 --random_trials 5 --actor d-sdt --run_name D-SDT_useBest --exp_name results_useBest --use_best_config --action_type continuous &
+
+nohup python ppo.py --env_id MiniGrid-Empty-Random-6x6-v0 --track --gpu_number 0 --random_trials 5 --actor d-sdt --run_name D-SDT_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-DoorKey-5x5-v0 --track --gpu_number 0 --random_trials 5 --actor d-sdt --run_name D-SDT_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-LavaGapS5-v0 --track --gpu_number 0 --random_trials 5 --actor d-sdt --run_name D-SDT_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-LavaGapS7-v0 --track --gpu_number 0 --random_trials 5 --actor d-sdt --run_name D-SDT_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-DistShift1-v0 --track --gpu_number 0 --random_trials 5 --actor d-sdt --run_name D-SDT_useBest --exp_name results_useBest --use_best_config &
+
+nohup python ppo.py --env_id MiniGrid-DistShift4-v0 --track --gpu_number 0 --random_trials 5 --actor d-sdt --run_name D-SDT_useBest --exp_name results_useBest --use_best_config &
+
+________________________________________________________________________________________________________________
+
+nohup python ppo_gymnax.py --env_id CartPole-v1 --track --gpu_number 0 --random_trials 5 --actor mlp --run_name MLP_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo_gymnax.py --env_id Acrobot-v1 --track --gpu_number 0 --random_trials 5 --actor mlp --run_name MLP_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id LunarLander-v2 --track --gpu_number 0 --random_trials 5 --actor mlp --run_name MLP_useBest --exp_name results_useBest --use_best_config &
+
+nohup python ppo_gymnax.py --env_id Pendulum-v1 --track --gpu_number 0 --random_trials 5 --actor mlp --run_name MLP_useBest --exp_name results_useBest --use_best_config --action_type continuous &
+nohup python ppo_gymnax.py --env_id MountainCarContinuous-v0 --track --gpu_number 0 --random_trials 5 --actor mlp --run_name MLP_useBest --exp_name results_useBest --use_best_config --action_type continuous &
+
+nohup python ppo.py --env_id MiniGrid-Empty-Random-6x6-v0 --track --gpu_number 0 --random_trials 5 --actor mlp --run_name MLP_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-DoorKey-5x5-v0 --track --gpu_number 0 --random_trials 5 --actor mlp --run_name MLP_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-LavaGapS5-v0 --track --gpu_number 0 --random_trials 5 --actor mlp --run_name MLP_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-LavaGapS7-v0 --track --gpu_number 0 --random_trials 5 --actor mlp --run_name MLP_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-DistShift1-v0 --track --gpu_number 0 --random_trials 5 --actor mlp --run_name MLP_useBest --exp_name results_useBest --use_best_config &
+
+nohup python ppo.py --env_id MiniGrid-DistShift4-v0 --track --gpu_number 0 --random_trials 5 --actor mlp --run_name MLP_useBest --exp_name results_useBest --use_best_config &
+
+
+________________________________________________________________________________________________________________
+
+nohup python ppo_gymnax.py --env_id CartPole-v1 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 5 --run_name SA-DT_5_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo_gymnax.py --env_id Acrobot-v1 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 5 --run_name SA-DT_5_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id LunarLander-v2 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 5 --run_name SA-DT_5_useBest --exp_name results_useBest --use_best_config 
+
+nohup python ppo_gymnax.py --env_id Pendulum-v1 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 5 --run_name SA-DT_5_useBest --exp_name results_useBest --use_best_config --action_type continuous &
+nohup python ppo_gymnax.py --env_id MountainCarContinuous-v0 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 5 --run_name SA-DT_5_useBest --exp_name results_useBest --use_best_config --action_type continuous &
+
+
+nohup python ppo.py --env_id MiniGrid-Empty-Random-6x6-v0 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 5 --run_name SA-DT_5_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-DoorKey-5x5-v0 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 5 --run_name SA-DT_5_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-LavaGapS5-v0 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 5 --run_name SA-DT_5_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-LavaGapS7-v0 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 5 --run_name SA-DT_5_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-DistShift1-v0 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 5 --run_name SA-DT_5_useBest --exp_name results_useBest --use_best_config &
+
+nohup python ppo.py --env_id MiniGrid-DistShift4-v0 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 5 --run_name SA-DT_5_useBest --exp_name results_useBest --use_best_config &
+
+
+________________________________________________________________________________________________________________
+
+nohup python ppo_gymnax.py --env_id CartPole-v1 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 8 --run_name SA-DT_8_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo_gymnax.py --env_id Acrobot-v1 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 8 --run_name SA-DT_8_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id LunarLander-v2 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 8 --run_name SA-DT_8_useBest --exp_name results_useBest --use_best_config 
+
+nohup python ppo_gymnax.py --env_id Pendulum-v1 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 8 --run_name SA-DT_8_useBest --exp_name results_useBest --use_best_config --action_type continuous &
+nohup python ppo_gymnax.py --env_id MountainCarContinuous-v0 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 8 --run_name SA-DT_8_useBest --exp_name results_useBest --use_best_config --action_type continuous &
+
+
+nohup python ppo.py --env_id MiniGrid-Empty-Random-6x6-v0 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 8 --run_name SA-DT_8_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-DoorKey-5x5-v0 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 8 --run_name SA-DT_8_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-LavaGapS5-v0 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 8 --run_name SA-DT_8_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-LavaGapS7-v0 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 8 --run_name SA-DT_8_useBest --exp_name results_useBest --use_best_config &
+nohup python ppo.py --env_id MiniGrid-DistShift1-v0 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 8 --run_name SA-DT_8_useBest --exp_name results_useBest --use_best_config &
+
+nohup python ppo.py --env_id MiniGrid-DistShift4-v0 --track --gpu_number 0 --random_trials 5 --actor stateActionDT --depth 8 --run_name SA-DT_8_useBest --exp_name results_useBest --use_best_config &
+
+
+_________________________________________________________________________________________________________________________________________________
+________________________________________________________       HPO CODE      ____________________________________________________________________
+_________________________________________________________________________________________________________________________________________________
+
+________________________________________________________       SYMPOL      ____________________________________________________________________
+
+./run_ppo.sh 4 python ppo_gymnax.py --env_id CartPole-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_HPO_normEnv_new --exp_name results_useBest --optimize_config --dynamic_buffer;
+./run_ppo.sh 4 python ppo_gymnax.py --env_id Acrobot-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_HPO_normEnv_new --exp_name results_useBest --optimize_config --dynamic_buffer;
+./run_ppo.sh 4 python ppo.py --env_id LunarLander-v2 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_HPO --exp_name results_useBest --optimize_config --dynamic_buffer;
+
+./run_ppo.sh 4 python ppo_gymnax.py --env_id Pendulum-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_HPO_normEnv_new --exp_name results_useBest --optimize_config --action_type continuous --dynamic_buffer;
+./run_ppo.sh 4 python ppo_gymnax.py --env_id MountainCarContinuous-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_HPO --exp_name results_useBest --optimize_config --action_type continuous --dynamic_buffer;
+
+./run_ppo.sh 3 python ppo.py --env_id MiniGrid-Empty-Random-6x6-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_HPO --exp_name results_useBest --optimize_config --dynamic_buffer;
+./run_ppo.sh 3 python ppo.py --env_id MiniGrid-DoorKey-5x5-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_HPO --exp_name results_useBest --optimize_config --dynamic_buffer;
+./run_ppo.sh 3 python ppo.py --env_id MiniGrid-LavaGapS5-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_HPO --exp_name results_useBest --optimize_config --dynamic_buffer;
+./run_ppo.sh 3 python ppo.py --env_id MiniGrid-LavaGapS7-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_HPO --exp_name results_useBest --optimize_config --dynamic_buffer;
+./run_ppo.sh 3 python ppo.py --env_id MiniGrid-DistShift1-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_HPO --exp_name results_useBest --optimize_config --dynamic_buffer;
+
+
+
+________________________________________________________       SDT      ____________________________________________________________________
+
+
+./run_ppo.sh 4 python ppo_gymnax.py --env_id CartPole-v1 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor sdt --run_name SDT_HPO --exp_name results_useBest --optimize_config;
+./run_ppo.sh 4 python ppo_gymnax.py --env_id Acrobot-v1 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor sdt --run_name SDT_HPO --exp_name results_useBest --optimize_config;
+./run_ppo.sh 4 python ppo.py --env_id LunarLander-v2 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor sdt --run_name SDT_HPO --exp_name results_useBest --optimize_config;
+
+./run_ppo.sh 4 python ppo_gymnax.py --env_id Pendulum-v1 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor sdt --run_name SDT_HPO --exp_name results_useBest --optimize_config --action_type continuous;
+./run_ppo.sh 4 python ppo_gymnax.py --env_id MountainCarContinuous-v0 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor sdt --run_name SDT_HPO --exp_name results_useBest --optimize_config --action_type continuous;
+
+./run_ppo.sh 4 python ppo.py --env_id MiniGrid-Empty-Random-6x6-v0 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor sdt --run_name SDT_HPO --exp_name results_useBest --optimize_config;
+./run_ppo.sh 3 python ppo.py --env_id MiniGrid-DoorKey-5x5-v0 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor sdt --run_name SDT_HPO --exp_name results_useBest --optimize_config;
+./run_ppo.sh 3 python ppo.py --env_id MiniGrid-LavaGapS5-v0 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor sdt --run_name SDT_HPO --exp_name results_useBest --optimize_config;
+
+./run_ppo.sh 4 python ppo.py --env_id MiniGrid-LavaGapS7-v0 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor sdt --run_name SDT_HPO --exp_name results_useBest --optimize_config;
+./run_ppo.sh 4 python ppo.py --env_id MiniGrid-DistShift1-v0 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor sdt --run_name SDT_HPO --exp_name results_useBest --optimize_config;
+
+________________________________________________________       MLP      ____________________________________________________________________
+
+./run_ppo.sh 4 python ppo_gymnax.py --env_id CartPole-v1 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor mlp --run_name MLP_HPO --exp_name results_useBest --optimize_config;
+./run_ppo.sh 4 python ppo_gymnax.py --env_id Acrobot-v1 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor mlp --run_name MLP_HPO --exp_name results_useBest --optimize_config;
+./run_ppo.sh 4 python ppo.py --env_id LunarLander-v2 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor mlp --run_name MLP_HPO --exp_name results_useBest --optimize_config;
+
+./run_ppo.sh 4 python ppo_gymnax.py --env_id Pendulum-v1 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor mlp --run_name MLP_HPO --exp_name results_useBest --optimize_config --action_type continuous;
+./run_ppo.sh 4 python ppo_gymnax.py --env_id MountainCarContinuous-v0 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor mlp --run_name MLP_HPO --exp_name results_useBest --optimize_config --action_type continuous;
+
+./run_ppo.sh 4 python ppo.py --env_id MiniGrid-Empty-Random-6x6-v0 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor mlp --run_name MLP_HPO --exp_name results_useBest --optimize_config;
+./run_ppo.sh 3 python ppo.py --env_id MiniGrid-DoorKey-5x5-v0 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor mlp --run_name MLP_HPO --exp_name results_useBest --optimize_config;
+./run_ppo.sh 3 python ppo.py --env_id MiniGrid-LavaGapS5-v0 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor mlp --run_name MLP_HPO --exp_name results_useBest --optimize_config;
+./run_ppo.sh 4 python ppo.py --env_id MiniGrid-LavaGapS7-v0 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor mlp --run_name MLP_HPO --exp_name results_useBest --optimize_config;
+./run_ppo.sh 4 python ppo.py --env_id MiniGrid-DistShift1-v0 --track --gpu_number 0 --random_trials 5 --n_trials 60 --actor mlp --run_name MLP_HPO --exp_name results_useBest --optimize_config;
+
+_________________________________________________________________________________________________________________________________________________
+______________________________________________________       Ablation CODE      _________________________________________________________________
+_________________________________________________________________________________________________________________________________________________
+
+nohup python ppo_gymnax_ablation.py --env_id CartPole-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_critic --exp_name results_useBest --use_best_config --dynamic_buffer --overwrite_explicit --critic sympol &
+nohup python ppo_gymnax_ablation.py --env_id CartPole-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noDynamicRollout --exp_name results_useBest --use_best_config --overwrite_explicit &
+nohup python ppo_gymnax_ablation.py --env_id CartPole-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noAdamW --exp_name results_useBest --use_best_config --dynamic_buffer --overwrite_explicit --no-adamW &
+nohup python ppo_gymnax_ablation.py --env_id CartPole-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noDynamicBatch --exp_name results_useBest --use_best_config --dynamic_buffer --overwrite_explicit --static_batch &
+nohup python ppo_gymnax_ablation.py --env_id CartPole-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noDynamicBatchRollout --exp_name results_useBest --use_best_config --overwrite_explicit --static_batch &
+
+nohup python ppo_ablation.py --env_id LunarLander-v2 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_critic --exp_name results_useBest --use_best_config --dynamic_buffer --overwrite_explicit --critic sympol &
+nohup python ppo_ablation.py --env_id LunarLander-v2 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noDynamicRollout --exp_name results_useBest --use_best_config --overwrite_explicit &
+nohup python ppo_ablation.py --env_id LunarLander-v2 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noAdamW --exp_name results_useBest --use_best_config --dynamic_buffer --overwrite_explicit --no-adamW &
+nohup python ppo_ablation.py --env_id LunarLander-v2 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noDynamicBatch --exp_name results_useBest --use_best_config --dynamic_buffer --overwrite_explicit --static_batch &
+nohup python ppo_ablation.py --env_id LunarLander-v2 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noDynamicBatchRollout --exp_name results_useBest --use_best_config --overwrite_explicit --static_batch &
+
+nohup python ppo_gymnax_ablation.py --env_id Pendulum-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_critic --exp_name results_useBest --use_best_config --dynamic_buffer --action_type continuous --overwrite_explicit --critic sympol &
+nohup python ppo_gymnax_ablation.py --env_id Pendulum-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noDynamicRollout --exp_name results_useBest --use_best_config --action_type continuous --overwrite_explicit &
+nohup python ppo_gymnax_ablation.py --env_id Pendulum-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noAdamW --exp_name results_useBest --use_best_config --dynamic_buffer --action_type continuous --overwrite_explicit --no-adamW &
+nohup python ppo_gymnax_ablation.py --env_id Pendulum-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noDynamicBatch --exp_name results_useBest --use_best_config --dynamic_buffer --action_type continuous --overwrite_explicit --static_batch &
+nohup python ppo_gymnax_ablation.py --env_id Pendulum-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noDynamicBatchRollout --exp_name results_useBest --use_best_config --action_type continuous --overwrite_explicit --static_batch &
+
+nohup python ppo_gymnax_ablation.py --env_id Acrobot-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_critic --exp_name results_useBest --use_best_config --dynamic_buffer --overwrite_explicit --critic sympol &
+nohup python ppo_gymnax_ablation.py --env_id Acrobot-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noDynamicRollout --exp_name results_useBest --use_best_config --overwrite_explicit &
+nohup python ppo_gymnax_ablation.py --env_id Acrobot-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noAdamW --exp_name results_useBest --use_best_config --dynamic_buffer --overwrite_explicit --no-adamW &
+nohup python ppo_gymnax_ablation.py --env_id Acrobot-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noDynamicBatch --exp_name results_useBest --use_best_config --dynamic_buffer --overwrite_explicit --static_batch &
+nohup python ppo_gymnax_ablation.py --env_id Acrobot-v1 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noDynamicBatchRollout --exp_name results_useBest --use_best_config --overwrite_explicit --static_batch &
+
+nohup python ppo_gymnax_ablation.py --env_id MountainCarContinuous-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_critic --exp_name results_useBest --use_best_config --dynamic_buffer --action_type continuous --overwrite_explicit --critic sympol &
+nohup python ppo_gymnax_ablation.py --env_id MountainCarContinuous-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noDynamicRollout --exp_name results_useBest --use_best_config --action_type continuous --overwrite_explicit &
+nohup python ppo_gymnax_ablation.py --env_id MountainCarContinuous-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noAdamW --exp_name results_useBest --use_best_config --dynamic_buffer --action_type continuous --overwrite_explicit --no-adamW &
+nohup python ppo_gymnax_ablation.py --env_id MountainCarContinuous-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noDynamicBatch --exp_name results_useBest --use_best_config --dynamic_buffer --action_type continuous --overwrite_explicit --static_batch &
+nohup python ppo_gymnax_ablation.py --env_id MountainCarContinuous-v0 --track --n_estimators 1 --gpu_number 0 --random_trials 5 --n_trials 60 --actor sympol --run_name SYMPOL_useBest_ablation_noDynamicBatchRollout --exp_name results_useBest --use_best_config --action_type continuous --overwrite_explicit --static_batch &
+
+
+
