@@ -1,4 +1,4 @@
-# SYMPOL: Symbolic Tree-Based On-Policy \\ Reinforcement Learning
+# SYMPOL: Symbolic Tree-Based On-Policy Reinforcement Learning
 
 ## Installing Requirements
 
