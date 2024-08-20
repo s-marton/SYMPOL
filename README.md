@@ -1,6 +1,34 @@
-# SYMPOL: Symbolic Tree-Based On-Policy Reinforcement Learning
+# 🤖🌳 SYMPOL: Symbolic Tree-Based On-Policy Reinforcement Learning 🌳🤖
 
-## Installing Requirements
+### Why SYMPOL?
+🔍 **It’s a novel method to learn interpretable decision trees directly with policy gradients, allowing a seamless integration into existing RL frameworks.**
+
+### Key Innovations:
+✅ Efficient learning of axis-aligned decision trees on-policy  
+✅ Enhanced training stability through a dynamic rollout buffer and batch size  
+✅ Weight decay to support dynamic adjustment of tree architecture  
+✅ Separate actor-critic network architecture, where the critic captures complexity, and the actor ensures interpretability  
+
+### Why is SYMPOL different?
+✔️ No need for pre-trained neural networks  
+✔️ No complex custom search procedures  
+✔️ No post-processing  
+✔️ No information loss  
+
+➡️ **SYMPOL guarantees that the learned policy remains consistent from training to inference.**
+
+### Performance? 
+🚀 **SYMPOL outperforms existing tree-based RL approaches and provides human-understandable explanations for every decision made.**
+
+### Curious to explore more? 
+📝 Read our detailed preprint on arXiv: [https://arxiv.org/abs/2408.08761](https://arxiv.org/abs/2408.08761)
+
+💬 We’d love to hear your thoughts—feedback is always welcome!  
+You can contact me at [sascha.marton@uni-mannheim.de](mailto:sascha.marton@uni-mannheim.de)
+
+## Implemenation and Experiments
+
+### Installing Requirements
 
 Create a virtual environment with any tool of your choice, e.g. conda and activate it:
 
@@ -22,7 +50,7 @@ conda install cuda=12.6 -c nvidia
 ```
  
 
-## Running the Script
+### Running the Script
 
 First, choose the environment you want to run using the --env_id argument, for example, if you want to run PPO using SYMPOL (SYMPOL is the default actor, you can choose between actors using the --actor flag, see `args.py` for more info) on CartPole-v1 using the default hyperparameters (specified as default in `args.py`)
 
@@ -41,15 +69,15 @@ For further possible arguments check the `args.py` file.
 We want to note that our code is based on ClearnRL (https://github.com/vwxyzjn/cleanrl) with adjustments to our method described in the paper as well as gymnax. We provide two scripts, `ppo.py` for standard Gymnasium environments and `ppo_gymnax.py` for vectorized environments with gymnax (https://github.com/RobertTLange/gymnax).
 
 
-# Experiments
+### Experiments
 To reproduce the experiments conducted to obtain the results in the paper, we provide the file `commands_to_run.txt` which contains all the exact commands used to obtain the results from the paper (with HPO as well as using the already documented optimized hyperparameters). We logged all results using wandb which can be activated using the `--track` flag.
 
 
-# Randomness
+### Randomness
 
 To avoid randomness, we used a predefined seed for all experiments. Unfortunately, due to the inherent randomness of some GPU operations we were not able to completely remove randomness. Therefore, running the experiments might result in slightly different results from those presented in the paper. However, this should only be minor deviations and the results and claims should stay consistent with those reported in the paper.
 
-# Hyperparameter Optimization with Optuna
+### Hyperparameter Optimization with Optuna
 
 With JAX, we can actually optimize the hyperparameters quite efficiently, due to the significant speed up.
 If you want to optimize a range of hyperparameters, first note that the range of each hyperparameter is specified in `configs.py` in the body of the function `suggest_config`. This function is called for every optuna trial. You can remove / add hyperparameters there, or change their range. To run one optuna study for example on LunarLander, you can use
