@@ -34,7 +34,6 @@
 <p><strong>Figure 2: SYMPOL.</strong> This is an overview of SYMPOL, with its two main components: (1) an interpretable DT policy and (2) a neural network as critic, which can be integrated into arbitrary actor-critic RL frameworks.</p>
 
 </div>
-Explanatio
 
 ### Key Innovations:
 ✅ Efficient learning of axis-aligned decision trees on-policy  
