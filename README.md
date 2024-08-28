@@ -1,5 +1,7 @@
 # 🤖🌳 SYMPOL: Symbolic Tree-Based On-Policy Reinforcement Learning 🌳🤖
 
+[![arXiv](https://img.shields.io/badge/arXiv-2308.01948-b31b1b.svg)](https://arxiv.org/abs/2308.01948)
+
 ### Why SYMPOL?
 🔍 **It’s a novel method to learn interpretable decision trees directly with policy gradients, allowing a seamless integration into existing RL frameworks.**
 
@@ -25,6 +27,16 @@
 
 💬 We’d love to hear your thoughts—feedback is always welcome!  
 You can contact me at [sascha.marton@uni-mannheim.de](mailto:sascha.marton@uni-mannheim.de)
+
+### Cite us
+```
+@article{marton2024sympol,
+  title={SYMPOL: Symbolic Tree-Based On-Policy Reinforcement Learning},
+  author={Marton, Sascha and Grams, Tim and Vogt, Florian and L{\"u}dtke, Stefan and Bartelt, Christian and Stuckenschmidt, Heiner},
+  journal={arXiv preprint arXiv:2408.08761},
+  year={2024}
+}
+```
 
 ## Implemenation and Experiments
 
