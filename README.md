@@ -2,8 +2,39 @@
 
 [![arXiv](https://img.shields.io/badge/arXiv-2408.08761-b31b1b.svg)](https://arxiv.org/abs/2408.08761)
 
+<div align="center">
+
+<table>
+  <tr>
+    <td>
+      <img src="figures/SYMPOL_train_test_text.jpg" alt="SYMPOL (ours)" width="500"/>
+      <p align="center"><strong>Figure 1 (a):</strong> SYMPOL (ours)</p>
+    </td>
+    <td>
+      <img src="figures/SA-DT_train_test_text.jpg" alt="State-Action DT" width="500"/>
+      <p align="center"><strong>Figure 1 (b):</strong> State-Action DT</p>
+    </td>
+    <td>
+      <img src="figures/D-SDT_train_test_text.jpg" alt="Discretized Soft DT" width="500"/>
+      <p align="center"><strong>Figure 1 (c):</strong> Discretized Soft DT</p>
+    </td>
+  </tr>
+</table>
+
+<p><strong>Information Loss in Tree-Based Reinforcement Learning on Pendulum.</strong> Existing methods for symbolic, tree-based RL (see Figure 1 (b) and (c)) suffer from severe information loss when converting the differentiable policy (high train reward) into the symbolic policy (low test reward). Using SYMPOL (Figure 1 (a)), we can directly optimize the symbolic policy with PPO and therefore have no information loss during the application (high train and test reward).</p>
+</div>
+
 ### Why SYMPOL?
 🔍 **It’s a novel method to learn interpretable decision trees directly with policy gradients, allowing a seamless integration into existing RL frameworks.**
+
+<div align="center">
+
+<img src="figures/sympol.jpg" alt="SYMPOL Overview" width="100%"/>
+
+<p><strong>Figure 2: SYMPOL.</strong> This is an overview of SYMPOL, with its two main components: (1) an interpretable DT policy and (2) a neural network as critic, which can be integrated into arbitrary actor-critic RL frameworks.</p>
+
+</div>
+Explanatio
 
 ### Key Innovations:
 ✅ Efficient learning of axis-aligned decision trees on-policy  
