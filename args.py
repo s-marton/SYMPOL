@@ -136,8 +136,8 @@ def get_args():
         help="MiniGrid view size",
     )    
     # SYMPOL specific parameters
-    parser.add_argument("--depth", type=int, default=5, help="Depth for each single estimator / tree")
-    parser.add_argument("--n_estimators", type=int, default=50, help="Number of estimators / trees for the ensemble")
+    parser.add_argument("--depth", type=int, default=7, help="Depth for each single estimator / tree")
+    parser.add_argument("--n_estimators", type=int, default=1, help="Number of estimators / trees for the ensemble")
     parser.add_argument(
         "--action_type",
         type=str,
