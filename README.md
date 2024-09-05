@@ -85,6 +85,12 @@ To install all necessary libraries, run
 pip install -r requirements.txt
 ```
 
+Occasionally it is necessary to install graphviz through anaconda, so please run
+
+```bash
+conda install graphviz
+```
+
 If you do not have matching cuda distributions for JAX, this might significantly slow down compilation. In this case, please consider updatind cuda, e.g. with
 
 ```bash
@@ -94,16 +100,10 @@ conda install cuda=12.6 -c nvidia
 
 ### Running the Script
 
-First, choose the environment you want to run using the --env_id argument, for example, if you want to run PPO using SYMPOL (SYMPOL is the default actor, you can choose between actors using the --actor flag, see `args.py` for more info) on CartPole-v1 using the default hyperparameters (specified as default in `args.py`)
+First, choose the environment you want to run using the --env_id argument, for example, if you want to run PPO using SYMPOL (SYMPOL is the default actor, you can choose between actors using the --actor flag, see `args.py` for more info) on CartPole-v1. This already uses optimized hyperparameters specified in `configs.py`.
 
 ```bash
-python ppo.py --env_id CartPole-v1
-```
-
-If an already optimized config exists (please check `configs.py` if a dictionary exists, which name contains the environment you want to run), you can use
-
-```bash
-python ppo.py --env_id CartPole-v1 --use_best_config
+python ppo_gymnax.py --env_id CartPole-v1 --gpu_number 0 --actor sympol --dynamic_buffer --use_best_config
 ```
 
 For further possible arguments check the `args.py` file.
