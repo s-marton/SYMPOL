@@ -841,8 +841,9 @@ def train_agent(args, trial=None, queue=None):
             
                                     numpy_clip = np.transpose(np.array(frames), (0, 3, 1, 2)) 
                                     fps = 5 if 'MiniGrid' in env_id else 25
-                                    wandb.log({"gameplay_" + name_appendix + '_trial' + str(episode_index): wandb.Video(numpy_clip, fps=fps, format="mp4")}, commit=False)
-                                    #wandb_log["gameplay_" + name_appendix + '_trial' + str(episode_index)] = wandb.Video(numpy_clip, fps=fps, format="mp4")
+                                    if args.track:
+                                        wandb.log({"gameplay_" + name_appendix + '_trial' + str(episode_index): wandb.Video(numpy_clip, fps=fps, format="mp4")}, commit=False)
+                                        #wandb_log["gameplay_" + name_appendix + '_trial' + str(episode_index)] = wandb.Video(numpy_clip, fps=fps, format="mp4")
 
                                 if episode_index==0:
                                     if args.action_type == 'discrete' or action_dim == 1:
@@ -855,9 +856,9 @@ def train_agent(args, trial=None, queue=None):
                                         plot_filename = image_path + "state_action_DT.png"
                                         plt.savefig(plot_filename)
                                         plt.close()
-                                
-                                        # Log the image to wandb
-                                        wandb.log({"state_action_DT": wandb.Image(plot_filename)})
+                                        if args.track:
+                                            # Log the image to wandb
+                                            wandb.log({"state_action_DT": wandb.Image(plot_filename)})
                                         node_count += decision_tree.tree_.node_count
                                     else:
                                         node_count = 0
@@ -872,8 +873,9 @@ def train_agent(args, trial=None, queue=None):
                                             plt.savefig(plot_filename)
                                             plt.close()
                                             node_count += decision_tree[i].tree_.node_count
-                                            # Log the image to wandb
-                                            wandb.log({"state_action_DT_" + str(i): wandb.Image(plot_filename)})
+                                            if args.track:
+                                                # Log the image to wandb
+                                                wandb.log({"state_action_DT_" + str(i): wandb.Image(plot_filename)})
                                 
                             temp_env.close()
 
@@ -947,8 +949,9 @@ def train_agent(args, trial=None, queue=None):
             
                                     numpy_clip = np.transpose(np.array(frames), (0, 3, 1, 2)) 
                                     fps = 5 if 'MiniGrid' in env_id else 25
-                                    wandb.log({"gameplay_" + name_appendix + '_trial' + str(episode_index): wandb.Video(numpy_clip, fps=fps, format="mp4")}, commit=False)
-                                #wandb_log["gameplay_" + name_appendix + '_trial' + str(episode_index)] = wandb.Video(numpy_clip, fps=fps, format="mp4")
+                                    if args.track:
+                                        wandb.log({"gameplay_" + name_appendix + '_trial' + str(episode_index): wandb.Video(numpy_clip, fps=fps, format="mp4")}, commit=False)
+                                        #wandb_log["gameplay_" + name_appendix + '_trial' + str(episode_index)] = wandb.Video(numpy_clip, fps=fps, format="mp4")
                                 if episode_index==0:
                                     split_values = actor_params_discrete['params']['SDT_0']['inner_nodes']['layers_0']['kernel'].T * jnp.expand_dims(actor_params_discrete['params']['SDT_0']['inner_nodes']['layers_0']['bias'],1)
                                     split_indices = actor_params_discrete['params']['SDT_0']['inner_nodes']['layers_0']['kernel'].T
@@ -967,8 +970,9 @@ def train_agent(args, trial=None, queue=None):
                                                                     prune=True,
                                                                     continuous = args.action_type != 'discrete'
                                                                    )
-                                    image_path_plot = image_path + '.png'     
-                                    wandb.log({"D-SDT_"+ name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
+                                    image_path_plot = image_path + '.png'
+                                    if args.track:
+                                        wandb.log({"D-SDT_"+ name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
                                     
                                     image_path_complete = image_path + '_COMPLETE'
                                     image_path_complete, _ = plot_decision_tree(
@@ -985,8 +989,9 @@ def train_agent(args, trial=None, queue=None):
                                                                     continuous = args.action_type != 'discrete'
                                                                    )
                                     
-                                    image_path_plot = image_path_complete + '.png'     
-                                    wandb.log({"D-SDT_COMPLETE"+ name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
+                                    image_path_plot = image_path_complete + '.png'    
+                                    if args.track:
+                                        wandb.log({"D-SDT_COMPLETE"+ name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
                                 
                             temp_env.close()                            
 
@@ -1055,8 +1060,9 @@ def train_agent(args, trial=None, queue=None):
         
                                 numpy_clip = np.transpose(np.array(frames), (0, 3, 1, 2)) 
                                 fps = 5 if 'MiniGrid' in env_id else 25
-                                wandb.log({"gameplay_" + name_appendix + '_trial' + str(episode_index): wandb.Video(numpy_clip, fps=fps, format="mp4")}, commit=False)
-                            #wandb_log["gameplay_" + name_appendix + '_trial' + str(episode_index)] = wandb.Video(numpy_clip, fps=fps, format="mp4")
+                                if args.track:
+                                    wandb.log({"gameplay_" + name_appendix + '_trial' + str(episode_index): wandb.Video(numpy_clip, fps=fps, format="mp4")}, commit=False)
+                                    #wandb_log["gameplay_" + name_appendix + '_trial' + str(episode_index)] = wandb.Video(numpy_clip, fps=fps, format="mp4")
                                 
                             if args.n_estimators <= 5 and args.actor == "sympol" and episode_index==0:
                                 for estimator_number in range(args.n_estimators):
@@ -1074,8 +1080,9 @@ def train_agent(args, trial=None, queue=None):
                                                                     prune=True,
                                                                     continuous = args.action_type != 'discrete'
                                                                    )
-                                image_path_plot = image_path + '.png'     
-                                wandb.log({"DT_"+ name_appendix + '_trial' + str(episode_index) + '_estNumber' + str(estimator_number): wandb.Image(image_path_plot)}, commit=False)
+                                image_path_plot = image_path + '.png'    
+                                if args.track:
+                                    wandb.log({"DT_"+ name_appendix + '_trial' + str(episode_index) + '_estNumber' + str(estimator_number): wandb.Image(image_path_plot)}, commit=False)
                                 for estimator_number in range(args.n_estimators):
                                     filename_appendix = '_' + str(estimator_number)                                       
                                     image_path_complete = image_path + '_COMPLETE'
@@ -1113,8 +1120,9 @@ def train_agent(args, trial=None, queue=None):
                                                                )
                                 if args.actor == 'sdt':
                                     node_count = node_count_sdt                                
-                                image_path_plot = image_path + '.png'     
-                                wandb.log({"SDT_"+ name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
+                                image_path_plot = image_path + '.png'   
+                                if args.track:
+                                    wandb.log({"SDT_"+ name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
                             
 
                         
@@ -1169,23 +1177,25 @@ def train_agent(args, trial=None, queue=None):
                 start_time = end_time
                 if args.actor == "stateActionDT" or args.actor == "d-sdt":
                     print(f"global_step={global_step}, avg_eval_episodic_return={avg_score}, avg_eval_episodic_return_discrete={avg_score_interpretable} (Elapsed time: {elapsed_time} seconds)")
-                    wandb_log['charts/avg_score'] = avg_score_interpretable
-                    wandb_log['charts/avg_score_fully_complexity'] = avg_score
-                    wandb_log['charts/std_score'] = std_score_interpretable
-                    wandb_log['charts/std_score_fully_complexity'] = std_score
-                    wandb_log['charts/score_interpretable_list'] = score_interpretable
-                    wandb_log['charts/score_list'] = score
+                    if args.track:
+                        wandb_log['charts/avg_score'] = avg_score_interpretable
+                        wandb_log['charts/avg_score_fully_complexity'] = avg_score
+                        wandb_log['charts/std_score'] = std_score_interpretable
+                        wandb_log['charts/std_score_fully_complexity'] = std_score
+                        wandb_log['charts/score_interpretable_list'] = score_interpretable
+                        wandb_log['charts/score_list'] = score
                     avg_score_list.append(avg_score_interpretable)                    
                 else:
                     print(f"global_step={global_step}, avg_eval_episodic_return={avg_score} (Elapsed time: {elapsed_time} seconds)")
-                    wandb_log['charts/avg_score'] = avg_score
-                    wandb_log['charts/std_score'] = std_score
-                    wandb_log['charts/score_list'] = score
+                    if args.track:
+                        wandb_log['charts/avg_score'] = avg_score
+                        wandb_log['charts/std_score'] = std_score
+                        wandb_log['charts/score_list'] = score
                     
                     avg_score_list.append(avg_score)
-
-                wandb_log['charts/node_count'] = node_count
-                wandb_log['charts/total_time_cleaned'] = total_time_cleaned
+                if args.track:
+                    wandb_log['charts/node_count'] = node_count
+                    wandb_log['charts/total_time_cleaned'] = total_time_cleaned
                 
                 if global_step + batch_size >= args.total_steps: #TEST EVAL
                     test_seed = 123456
@@ -1213,20 +1223,22 @@ def train_agent(args, trial=None, queue=None):
                     # but we have a plataeu when the score is not increasing anymore
                     if args.actor == "stateActionDT" or args.actor == "d-sdt":
                         print(f"global_step={global_step}, avg_eval_episodic_return={avg_score_test}, avg_eval_episodic_return_discrete={avg_score_interpretable_test} (Elapsed time: {elapsed_time} seconds)")
-                        wandb_log['charts/avg_score_test'] = avg_score_interpretable_test
-                        wandb_log['charts/avg_score_fully_complexity_test'] = avg_score_test
-                        wandb_log['charts/std_score_test'] = std_score_interpretable_test
-                        wandb_log['charts/std_score_fully_complexity_test'] = std_score_test
-                        wandb_log['charts/score_list_test'] = score_interpretable_test
-                        wandb_log['charts/score_fully_complexity_list_test'] =  score_test 
+                        if args.track:
+                            wandb_log['charts/avg_score_test'] = avg_score_interpretable_test
+                            wandb_log['charts/avg_score_fully_complexity_test'] = avg_score_test
+                            wandb_log['charts/std_score_test'] = std_score_interpretable_test
+                            wandb_log['charts/std_score_fully_complexity_test'] = std_score_test
+                            wandb_log['charts/score_list_test'] = score_interpretable_test
+                            wandb_log['charts/score_fully_complexity_list_test'] =  score_test 
 
                     else:
                         print(f"global_step={global_step}, avg_eval_episodic_return={avg_score_test} (Elapsed time: {elapsed_time} seconds)")
-                        wandb_log['charts/avg_score_test'] = avg_score_test
-                        wandb_log['charts/std_score_test'] = std_score
-                        wandb_log['charts/score_list_test'] = score_test
-                            
-                    wandb_log['charts/node_count_test'] = node_count_test
+                        if args.track:
+                            wandb_log['charts/avg_score_test'] = avg_score_test
+                            wandb_log['charts/std_score_test'] = std_score
+                            wandb_log['charts/score_list_test'] = score_test
+                    if args.track:        
+                        wandb_log['charts/node_count_test'] = node_count_test
 
                     
                 
@@ -1243,7 +1255,8 @@ def train_agent(args, trial=None, queue=None):
 
                         print(f"global_step={global_step}, complexity={complexity_level_new} avg_eval_episodic_return={avg_score}")
                         #writer.add_scalar("charts/avg_score_complexity" + complexity_level_new, avg_score, global_step)
-                        wandb_log["charts/avg_score_complexity" + complexity_level_new] = avg_score
+                        if args.track:
+                            wandb_log["charts/avg_score_complexity" + complexity_level_new] = avg_score
                         complexity_add += 1
                 except:
                     pass
@@ -1269,24 +1282,25 @@ def train_agent(args, trial=None, queue=None):
             #writer.add_scalar("losses/entropy", entropy_loss.item(), global_step)
             #writer.add_scalar("losses/approx_kl", approx_kl.item(), global_step)
             #writer.add_scalar("losses/loss", loss.item(), global_step)
-            wandb_log['charts/global_step'] = global_step
-            wandb_log['charts/avg_episodic_return'] = avg_episodic_return
-            wandb_log['charts/avg_episodic_return_100'] = np.mean(avg_episodic_return_list[-100:])
-            wandb_log['charts/avg_episodic_return_10'] = np.mean(avg_episodic_return_list[-10:])
-            wandb_log['charts/avg_episodic_length'] = np.mean(np.array(episode_stats.returned_episode_lengths))
-            try:
-                wandb_log['losses/value_loss'] = np.mean(v_loss[-1])#.item()
-                wandb_log['losses/policy_loss'] = np.mean(pg_loss[-1])#.item()
-                wandb_log['losses/entropy'] = np.mean(entropy_loss[-1])#.item()
-                wandb_log['losses/approx_kl'] = np.mean(approx_kl[-1])#.item()
-                wandb_log['losses/loss'] = np.mean(loss[-1])#.item()
-            except:
-                wandb_log['losses/value_loss'] = v_loss#.item()
-                wandb_log['losses/policy_loss'] = pg_loss#.item()
-                wandb_log['losses/entropy'] = entropy_loss#.item()
-                wandb_log['losses/approx_kl'] = approx_kl#.item()
-                wandb_log['losses/loss'] = loss#.item()                
-            wandb.log(wandb_log)   
+            if args.track:
+                wandb_log['charts/global_step'] = global_step
+                wandb_log['charts/avg_episodic_return'] = avg_episodic_return
+                wandb_log['charts/avg_episodic_return_100'] = np.mean(avg_episodic_return_list[-100:])
+                wandb_log['charts/avg_episodic_return_10'] = np.mean(avg_episodic_return_list[-10:])
+                wandb_log['charts/avg_episodic_length'] = np.mean(np.array(episode_stats.returned_episode_lengths))
+                try:
+                    wandb_log['losses/value_loss'] = np.mean(v_loss[-1])#.item()
+                    wandb_log['losses/policy_loss'] = np.mean(pg_loss[-1])#.item()
+                    wandb_log['losses/entropy'] = np.mean(entropy_loss[-1])#.item()
+                    wandb_log['losses/approx_kl'] = np.mean(approx_kl[-1])#.item()
+                    wandb_log['losses/loss'] = np.mean(loss[-1])#.item()
+                except:
+                    wandb_log['losses/value_loss'] = v_loss#.item()
+                    wandb_log['losses/policy_loss'] = pg_loss#.item()
+                    wandb_log['losses/entropy'] = entropy_loss#.item()
+                    wandb_log['losses/approx_kl'] = approx_kl#.item()
+                    wandb_log['losses/loss'] = loss#.item()                
+                wandb.log(wandb_log)   
         
             iteration = iteration + 1
         if args.track:
