@@ -926,8 +926,9 @@ def train_agent(args, trial=None, queue=None):
             
                                     numpy_clip = np.transpose(np.array(frames), (0, 3, 1, 2)) 
                                     fps = 5 if 'MiniGrid' in env_id else 25
-                                    wandb.log({"gameplay_" + name_appendix + '_trial' + str(episode_index): wandb.Video(numpy_clip, fps=fps, format="mp4")}, commit=False)
-                                    #wandb_log["gameplay_" + name_appendix + '_trial' + str(episode_index)] = wandb.Video(numpy_clip, fps=fps, format="mp4")
+                                    if args.track:
+                                        wandb.log({"gameplay_" + name_appendix + '_trial' + str(episode_index): wandb.Video(numpy_clip, fps=fps, format="mp4")}, commit=False)
+                                        #wandb_log["gameplay_" + name_appendix + '_trial' + str(episode_index)] = wandb.Video(numpy_clip, fps=fps, format="mp4")
                                 if episode_index==0:
                                     if args.action_type == 'discrete' or action_dim == 1:
                                         # Plot the decision tree
@@ -943,8 +944,9 @@ def train_agent(args, trial=None, queue=None):
                                         plt.close()
                                 
                                         # Log the image to wandb
-                                        wandb.log({"state_action_DT": wandb.Image(plot_filename)})
-                                        node_count += decision_tree.tree_.node_count
+                                        if args.track:
+                                            wandb.log({"state_action_DT": wandb.Image(plot_filename)})
+                                            node_count += decision_tree.tree_.node_count
                                     else:
                                         node_count = 0
                                         for i in range(action_dim):                    
@@ -960,8 +962,9 @@ def train_agent(args, trial=None, queue=None):
                                             plt.savefig(plot_filename)
                                             plt.close()
                                             node_count += decision_tree[i].tree_.node_count
-                                            # Log the image to wandb
-                                            wandb.log({"state_action_DT_" + str(i): wandb.Image(plot_filename)})
+                                            if args.track:
+                                                # Log the image to wandb
+                                                wandb.log({"state_action_DT_" + str(i): wandb.Image(plot_filename)})
 
                             temp_env.close()
                     
@@ -1063,7 +1066,8 @@ def train_agent(args, trial=None, queue=None):
             
                                     numpy_clip = np.transpose(np.array(frames), (0, 3, 1, 2)) 
                                     fps = 5 if 'MiniGrid' in env_id else 25
-                                    wandb.log({"gameplay_" + name_appendix + '_trial' + str(episode_index): wandb.Video(numpy_clip, fps=fps, format="mp4")}, commit=False)                          
+                                    if args.track:
+                                        wandb.log({"gameplay_" + name_appendix + '_trial' + str(episode_index): wandb.Video(numpy_clip, fps=fps, format="mp4")}, commit=False)                          
                                 if episode_index==0:
                                     split_values = actor_params_discrete['params']['SDT_0']['inner_nodes']['layers_0']['kernel'].T * jnp.expand_dims(actor_params_discrete['params']['SDT_0']['inner_nodes']['layers_0']['bias'],1)
                                     split_indices = actor_params_discrete['params']['SDT_0']['inner_nodes']['layers_0']['kernel'].T
@@ -1083,7 +1087,8 @@ def train_agent(args, trial=None, queue=None):
                                                                     continuous = args.action_type != 'discrete'
                                                                    )
                                     image_path_plot = image_path + '.png'     
-                                    wandb.log({"D-SDT_"+ name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
+                                    if args.track:
+                                        wandb.log({"D-SDT_"+ name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
                                     
                                     image_path_complete = image_path + '_COMPLETE'
                                     image_path_complete, _ = plot_decision_tree(
@@ -1101,7 +1106,8 @@ def train_agent(args, trial=None, queue=None):
                                                                    )
                                     
                                     image_path_plot = image_path_complete + '.png'     
-                                    wandb.log({"D-SDT_COMPLETE"+ name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
+                                    if args.track:
+                                        wandb.log({"D-SDT_COMPLETE"+ name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
                                 
                             
                             temp_env.close()                    
@@ -1204,8 +1210,9 @@ def train_agent(args, trial=None, queue=None):
         
                                 numpy_clip = np.transpose(np.array(frames), (0, 3, 1, 2)) 
                                 fps = 5 if 'MiniGrid' in env_id else 25
-                                wandb.log({"gameplay_" + name_appendix + '_trial' + str(episode_index): wandb.Video(numpy_clip, fps=fps, format="mp4")}, commit=False)
-                            #wandb_log["gameplay_" + name_appendix + '_trial' + str(episode_index)] = wandb.Video(numpy_clip, fps=fps, format="mp4")
+                                if args.track:
+                                    wandb.log({"gameplay_" + name_appendix + '_trial' + str(episode_index): wandb.Video(numpy_clip, fps=fps, format="mp4")}, commit=False)
+                                    #wandb_log["gameplay_" + name_appendix + '_trial' + str(episode_index)] = wandb.Video(numpy_clip, fps=fps, format="mp4")
                         
                             if args.n_estimators <= 5 and args.actor == "sympol" and episode_index==0:
                                 for estimator_number in range(args.n_estimators):
@@ -1231,9 +1238,10 @@ def train_agent(args, trial=None, queue=None):
                                     #print(f"global_step={global_step}, actor_state.indices={actor_state.indices}")
 
                                     
-                                image_path_plot = image_path + '.png'     
-                                wandb.log({"DT_"+ name_appendix + '_trial' + str(episode_index) + '_estNumber' + str(estimator_number): wandb.Image(image_path_plot)}, commit=False)
-                                #wandb_log["DT_"+ name_appendix + '_trial' + str(episode_index) + '_estNumber' + str(estimator_number)] = wandb.Image(image_path)
+                                image_path_plot = image_path + '.png'  
+                                if args.track:
+                                    wandb.log({"DT_"+ name_appendix + '_trial' + str(episode_index) + '_estNumber' + str(estimator_number): wandb.Image(image_path_plot)}, commit=False)
+                                    #wandb_log["DT_"+ name_appendix + '_trial' + str(episode_index) + '_estNumber' + str(estimator_number)] = wandb.Image(image_path)
                                 for estimator_number in range(args.n_estimators):
                                     filename_appendix = '_' + str(estimator_number)
                                     env_gymnax_plot = env_gymnax   
@@ -1255,8 +1263,9 @@ def train_agent(args, trial=None, queue=None):
                                                                    )
                                     
                                 image_path_plot = image_path_complete + '.png'     
-                                wandb.log({"DT_COMPLETE"+ name_appendix + '_trial' + str(episode_index) + '_estNumber' + str(estimator_number): wandb.Image(image_path_plot)}, commit=False)
-                                #wandb_log["DT_"+ name_appendix + '_trial' + str(episode_index) + '_estNumber' + str(estimator_number)] = wandb.Image(image_path)
+                                if args.track:
+                                    wandb.log({"DT_COMPLETE"+ name_appendix + '_trial' + str(episode_index) + '_estNumber' + str(estimator_number): wandb.Image(image_path_plot)}, commit=False)
+                                    #wandb_log["DT_"+ name_appendix + '_trial' + str(episode_index) + '_estNumber' + str(estimator_number)] = wandb.Image(image_path)
                             elif (args.actor == 'sdt' or args.actor == 'd-sdt') and episode_index==0:
     
                                 split_values = actor_params['params']['SDT_0']['inner_nodes']['layers_0']['bias']
@@ -1275,8 +1284,9 @@ def train_agent(args, trial=None, queue=None):
                                                                )
                                 if args.actor == 'sdt':
                                     node_count = node_count_sdt
-                                image_path_plot = image_path + '.png'     
-                                wandb.log({"SDT_"+ name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
+                                image_path_plot = image_path + '.png' 
+                                if args.track:
+                                    wandb.log({"SDT_"+ name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
                             
                         temp_env.close()
                         
@@ -1440,7 +1450,8 @@ def train_agent(args, trial=None, queue=None):
                 wandb_log['losses/entropy'] = entropy_loss#.item()
                 wandb_log['losses/approx_kl'] = approx_kl#.item()
                 wandb_log['losses/loss'] = loss#.item()                
-            wandb.log(wandb_log)   
+            if args.track:
+                wandb.log(wandb_log)   
         
             iteration = iteration + 1
         if args.track:
