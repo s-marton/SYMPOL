@@ -549,21 +549,28 @@ def train_agent(args, trial=None, queue=None):
                     )
                     critic_state = critic_state.apply_gradients(grads=critic_grads)
                     actor_grad_accum = jax.tree_util.tree_map(lambda x, y: x + y, actor_grads, actor_state.grad_accum)
-                    actor_state = actor_state.apply_gradients(grads=actor_grads)
-            
-                    def update_fn():
-                        grads = jax.tree_util.tree_map(lambda x: x / accumulate_gradients_every, actor_grad_accum)
-                        new_state = actor_state.apply_gradients(
+
+                    def update_fn(accum_grads_and_state: tuple[Any, TrainState]):
+                        accum_grads, state = accum_grads_and_state
+                        grads = jax.tree_util.tree_map(lambda x: x / accumulate_gradients_every, accum_grads)
+                        # Apply gradients and zero the accumulation
+                        new_state = state.apply_gradients(
                             grads=grads,
                             grad_accum=jax.tree_util.tree_map(jnp.zeros_like, grads),
                         )
                         return new_state
-            
+
+                    def accumulate_only_fn(accum_grads_and_state: tuple[Any, TrainState]):
+                        accum_grads, state = accum_grads_and_state
+                        return state.replace(grad_accum=accum_grads, step=state.step + 1)
+
+                    # Use lax.cond to accumulate or to apply
                     actor_state = jax.lax.cond(
-                        actor_state.step % accumulate_gradients_every == 0,
-                        lambda _: update_fn(),
-                        lambda _: actor_state.replace(grad_accum=actor_grad_accum, step=actor_state.step + 1),
-                        None,
+                        # +1 to not apply on step 0
+                        (actor_state.step + 1) % accumulate_gradients_every == 0,
+                        update_fn,
+                        accumulate_only_fn,
+                        operand=(actor_grad_accum, actor_state),
                     )
                     
                     return (actor_state, critic_state), (loss, pg_loss, v_loss, entropy_loss, approx_kl, actor_grad_accum)
