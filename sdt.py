@@ -3,23 +3,26 @@ import flax.linen as nn
 from flax.linen.initializers import normal
 import jax
 
+
 def temperature_sigmoid(x, temperature=1.0):
-    """ Custom sigmoid function with temperature. """
+    """Custom sigmoid function with temperature."""
     return 1 / (1 + jnp.exp(-x / temperature))
+
 
 def entmoid15(x, temperature=1.0):
     return entmax15JAX(jnp.stack([x / temperature, jnp.zeros(x.shape)], axis=-1), axis=-1)[..., 0]
 
+
 class SubtractiveEntmaxDense(nn.Module):
     features: int  # Number of output features
     temperature: float
-    
+
     @nn.compact
     def __call__(self, inputs, max_path=False):
         # Create weight and bias variables
         weight = self.param('kernel', normal(0.1), (inputs.shape[-1], self.features))
         bias = self.param('bias', normal(1.0), (self.features,))
-        
+
         # Compute the dense layer output with bias subtraction
         weight = jax.lax.cond(
             max_path,
@@ -27,7 +30,7 @@ class SubtractiveEntmaxDense(nn.Module):
             lambda x: entmax15JAX(weight.T / self.temperature).T,
             weight
         )
-            
+
         output = jnp.dot(inputs, weight) - bias
         output = jax.lax.cond(
             max_path,
@@ -36,9 +39,10 @@ class SubtractiveEntmaxDense(nn.Module):
             lambda x: entmoid15(output, self.temperature),
             output
         )
-      
+
         return output
-    
+
+
 class SDT(nn.Module):
     input_dim: int
     output_dim: int
@@ -57,13 +61,14 @@ class SDT(nn.Module):
             #lambda x: entmoid15(x, self.temperature)
             #entmoid15
         ])
-        
+
         if self.action_type == "discrete":
             self.leaf_nodes = nn.Dense(self.output_dim, use_bias=False, kernel_init=normal(0.1))
             self.stds = None#nn.Dense(self.output_dim, use_bias=False, kernel_init=normal(0.1))
         else:
             self.leaf_nodes = nn.Dense(self.output_dim, use_bias=False, kernel_init=normal(0.1))
-            self.log_std = self.param("log_std", nn.initializers.zeros, (self.output_dim,))      
+            self.log_std = self.param("log_std", nn.initializers.zeros, (self.output_dim,))
+
     def __call__(self, x, max_path):
         batch_size = x.shape[0]
         #x = self._data_augment(x)
@@ -72,10 +77,10 @@ class SDT(nn.Module):
 
         path_prob = self.inner_nodes(x, max_path=max_path)
         #entmax15JAX(self.inner_nodes(
-        
+
         path_prob = jnp.expand_dims(path_prob, axis=2)
         path_prob = jnp.concatenate((path_prob, 1 - path_prob), axis=2)
-        
+
         mu = jnp.ones((batch_size, 1, 1))
 
         begin_idx = 0
@@ -83,7 +88,7 @@ class SDT(nn.Module):
 
         for layer_idx in range(self.depth):
             path_prob_layer = path_prob[:, begin_idx:end_idx, :]
-            
+
             mu = jnp.reshape(mu, (batch_size, -1, 1))
             mu = jnp.tile(mu, (1, 1, 2))
 
@@ -99,8 +104,9 @@ class SDT(nn.Module):
         else:
             mean = self.leaf_nodes(mu)
             y_pred = [mean, self.log_std]
-            
+
         return y_pred
+
 
 class Critic_SDT(nn.Module):
     depth: int = 5
@@ -111,17 +117,17 @@ class Critic_SDT(nn.Module):
         sdt = SDT(input_dim=x.shape[-1], output_dim=1, depth=self.depth, temperature=self.temperature)
         return sdt(x, False)#, **kwargs)
 
+
 class Actor_SDT(nn.Module):
     action_dim: int
     depth: int = 5
     temperature: float = 1.0
     action_type: str = "discrete" #"continuous"
-    
+
     @nn.compact
     def __call__(self, obs: jnp.ndarray, max_path=False, **kwargs):
         sdt = SDT(input_dim=obs.shape[-1], output_dim=self.action_dim, depth=self.depth, temperature=self.temperature, action_type=self.action_type)
         return sdt(obs, max_path)#, **kwargs)
-
 
 
 """
@@ -199,7 +205,6 @@ def entmax_threshold_and_supportJAX(inputs, axis=-1):
     :param inputs: (entmax1.5 inputs - max) / 2
     :param axis: entmax1.5 outputs will sum to 1 over this axis
     """
-
     with jax.named_scope("entmax_threshold_and_supportJAX"):
         num_outcomes = inputs.shape[axis]
 
@@ -222,9 +227,7 @@ def entmax_threshold_and_supportJAX(inputs, axis=-1):
 
 
 def entmax15JAX(inputs, axis=-1):
-
     # Implementation taken from: https://github.com/deep-spin/entmax/tree/master/entmax
-
     """
     Entmax 1.5 implementation, heavily inspired by
      * paper: https://arxiv.org/pdf/1905.05702.pdf

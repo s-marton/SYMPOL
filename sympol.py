@@ -38,7 +38,7 @@ class SYMPOL_RL:
             selected_variables = int(self.obs_dim * self.subset_fraction)
             selected_variables = min(selected_variables, 50)
             selected_variables = max(selected_variables, 10)
-            selected_variables = min(selected_variables, self.obs_dim)  
+            selected_variables = min(selected_variables, self.obs_dim)
             if not selected_variables * self.n_estimators > 3 * self.obs_dim:
                 selected_variables = self.obs_dim
         else:
@@ -65,9 +65,8 @@ class SYMPOL_RL:
 
         log_std = mu + std * jax.random.normal(
             key=logstd_key, shape=[self.action_dim,], dtype=jnp.float32
-        )        
+        )
 
-        
         params = {
             "estimator_weights": estimator_weights,
             "split_values": split_values,
@@ -84,13 +83,12 @@ class SYMPOL_RL:
             selected_variables = int(self.obs_dim * self.subset_fraction)
             selected_variables = min(selected_variables, 50)
             selected_variables = max(selected_variables, 10)
-            selected_variables = min(selected_variables, self.obs_dim)  
+            selected_variables = min(selected_variables, self.obs_dim)
             if not selected_variables * self.n_estimators > 3 * self.obs_dim:
                 selected_variables = self.obs_dim
         else:
             selected_variables = self.obs_dim
 
-        
         features_by_estimator = jnp.stack(
             [
                 jax.random.choice(random_key+i, self.obs_dim, shape=(selected_variables,), replace=False, p=None)
@@ -106,10 +104,9 @@ class SYMPOL_RL:
                 internal_node_index = (2 ** (current_depth - 1) + jnp.floor(leaf_index / (2 ** (self.depth - (current_depth - 1)))) - 1).astype(jnp.int32)
                 path_identifier_list.append(path_identifier)
                 internal_node_index_list.append(internal_node_index)
-        
+
         path_identifier_list = jnp.reshape(jnp.array(path_identifier_list, dtype=jnp.float32), (-1, self.depth))
         internal_node_index_list = jnp.reshape(jnp.array(internal_node_index_list, dtype=jnp.int32), (-1, self.depth))
-
 
         #jax.debug.print("path_identifier_list: {}", path_identifier_list)
         #jax.debug.print("internal_node_index_list: {}", internal_node_index_list)
@@ -157,7 +154,7 @@ class SYMPOL_RL:
         s1_sum = jnp.einsum("ein,ein->ei", split_values, split_index_array)
         s2_sum = jnp.einsum("ben,ein->bei", X_estimator, split_index_array)
         #s2_sum = jnp.einsum("bn,ein->bei", inputs, split_index_array)
-        
+
         # calculate the split (output shape: (b, e, i))
         node_result = (jax.nn.soft_sign(s1_sum - s2_sum) + 1) / 2
         adjust_constant = node_result - jnp.round(node_result)
@@ -267,7 +264,6 @@ def entmax_threshold_and_supportJAX(inputs, axis=-1):
     :param inputs: (entmax1.5 inputs - max) / 2
     :param axis: entmax1.5 outputs will sum to 1 over this axis
     """
-
     with jax.named_scope("entmax_threshold_and_supportJAX"):
         num_outcomes = inputs.shape[axis]
 
@@ -292,7 +288,6 @@ def entmax_threshold_and_supportJAX(inputs, axis=-1):
 def entmax15JAX(inputs, axis=-1):
 
     # Implementation taken from: https://github.com/deep-spin/entmax/tree/master/entmax
-
     """
     Entmax 1.5 implementation, heavily inspired by
      * paper: https://arxiv.org/pdf/1905.05702.pdf

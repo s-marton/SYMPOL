@@ -44,7 +44,6 @@ OBSERVATION_LABELS = {
 class NormalizeObservationWrapper(GymnaxWrapper):
     """Normalize the observations of the environment."""
 
-
     def __init__(self, env, params):
         super().__init__(env)
 
@@ -52,7 +51,7 @@ class NormalizeObservationWrapper(GymnaxWrapper):
         self.original_high_no_clip = self._env.observation_space(params).high
         self.original_low = jnp.clip(self._env.observation_space(params).low, -10, 10)
         self.original_high = jnp.clip(self._env.observation_space(params).high, -10, 10)
-    
+
     def observation_space(self, params) -> spaces_gymnax.Box:
         assert isinstance(
             self._env.observation_space(params), spaces_gymnax.Box
@@ -67,9 +66,9 @@ class NormalizeObservationWrapper(GymnaxWrapper):
         print(-0.5 + (self.original_low_no_clip - self.original_low) / (self.original_high - self.original_low), self.original_high, self.original_low, self.original_low_no_clip)
         print(space.low, space.high)
         return space
-        
+
     def normalize_obs(self, obs: jnp.ndarray) -> jnp.ndarray:
-        return -0.5 + (obs - self.original_low) / (self.original_high - self.original_low)        
+        return -0.5 + (obs - self.original_low) / (self.original_high - self.original_low)
 
     @functools.partial(jax.jit, static_argnums=(0,))
     def reset(
@@ -98,10 +97,10 @@ class RandomGoalDistShiftEnv(DistShiftEnv):
 
     def _gen_grid(self, width, height):
         super()._gen_grid(width, height)
-        
+
         # Remove the old goal
         self.grid.set(width-2, 1, None)
-        
+
         # Randomly place the goal somewhere in the grid
         while True:
             goal_x = self._rand_int(0, width)
@@ -111,6 +110,7 @@ class RandomGoalDistShiftEnv(DistShiftEnv):
                 break
 
         self.mission = "Get to the green goal square"
+
 
 # Register the environment with Gymnasium
 register(
@@ -118,16 +118,17 @@ register(
     entry_point='utils:RandomGoalDistShiftEnv',
 )
 
+
 class RandomGoalDistShiftEnv2(DistShiftEnv):
     def __init__(self, strip2_row=5, **kwargs):
         super().__init__(strip2_row=strip2_row, **kwargs)
 
     def _gen_grid(self, width, height):
         super()._gen_grid(width, height)
-        
+
         # Remove the old goal
         self.grid.set(width-2, 1, None)
-        
+
         # Randomly place the goal somewhere in the grid
         while True:
             goal_x = self._rand_int(0, width)
@@ -138,11 +139,13 @@ class RandomGoalDistShiftEnv2(DistShiftEnv):
 
         self.mission = "Get to the green goal square"
 
+
 # Register the environment with Gymnasium
 register(
     id='MiniGrid-DistShift4-v0',
     entry_point='utils:RandomGoalDistShiftEnv2',
 )
+
 
 class FlatCurrentWrapper(ObservationWrapper):
     """
@@ -185,14 +188,13 @@ class FlatCurrentWrapper(ObservationWrapper):
         obs = obs * 2 - 1 # convert to range -1,1 instead of 0,1
         return obs
 
+
 """
     Object Types
     Each object type in the MiniGrid environment is assigned a specific integer value. Here are the common object types:
 
     [0,1,2,8,9]
-    
-    
-    
+
     unseen	    0 |  0
     empty	    1 |  1
     wall	    2 |  2
@@ -206,10 +208,9 @@ class FlatCurrentWrapper(ObservationWrapper):
     agent      10 | 10
     -----------------------
 
-    
     Colors
     Colors are also encoded as integer values. Here are the typical colors used in the MiniGrid environment:
-    
+
     Color	Value
     Red  	0 | 11
     Green	1 | 12
@@ -226,8 +227,8 @@ class FlatCurrentWrapper(ObservationWrapper):
     Closed	1 | 18
     Locked	2 | 19
 
-    
-    | **Num** | **Name**   | 
+
+    | **Num** | **Name**   |
     |:-------:|:----------:|
     | **0**   | **left**   |
     | **1**   | **right**  |
@@ -236,8 +237,8 @@ class FlatCurrentWrapper(ObservationWrapper):
     | **4**   | **drop**   |
     | **5**   | **toggle** |
     | **6**   | **done**   |
-    
 """
+
 
 class FlatCurrentReducedWrapper(ObservationWrapper):
     """
@@ -261,18 +262,18 @@ class FlatCurrentReducedWrapper(ObservationWrapper):
         super().__init__(env)
 
         imgSpace = env.observation_space.spaces["image"]
-        
+
         self.select_indices = [0,1,2,8,9]
         # Define a mapping from environment names to select indices
         env_select_indices = {
             "DistShift": [0, 1, 2, 8, 9], # left, right, forward
             "LavaGap": [0, 1, 2, 8, 9], # left, right, forward
             "LavaCrossing": [0, 1, 2, 8, 9], # left, right, forward
-            
+
             "SimpleCrossing": [0, 1, 2, 8], # left, right, forward
             "FourRooms": [0, 1, 2, 8], # left, right, forward
             "Empty": [0, 1, 2, 8], # left, right, forward
-            
+
             "MultiRoom": [0, 1, 2, 4, 8, 17, 18], # left, right, forward, toggle
 
             "Dynamic-Obstacles": [0, 1, 2, 4, 6, 8], # left, right, forward
@@ -285,16 +286,16 @@ class FlatCurrentReducedWrapper(ObservationWrapper):
             "GoToDoor": [0, 1, 2, 4, 8, 11, 12, 13, 14, 15, 16], # left, right, forward, done
 
             "RedBlueDoors": [0, 1, 2, 4, 8, 11, 13, 17, 18], # left, right, forward, toggle
-            "PutNear": [0, 1, 2, 4, 8, 17, 18], # left, right, forward, pickup, drop 
+            "PutNear": [0, 1, 2, 4, 8, 17, 18], # left, right, forward, pickup, drop
         }
 
         # Get the environment name
         env_name = env.spec.id
-        
+
         env_identifier = env_name
         for key in env_select_indices.keys():
             if key in env_name:
-                env_identifier = key     
+                env_identifier = key
 
         # Set select_indices based on the environment name
         if env_identifier in env_select_indices:
@@ -303,7 +304,6 @@ class FlatCurrentReducedWrapper(ObservationWrapper):
         else:
             raise ValueError(f"Environment {env_identifier} is not supported by this wrapper.")
 
-        
         imgSize = imgSpace.shape[0] * imgSpace.shape[1] * len(self.select_indices) #reduce(operator.mul, imgSpace.shape, 1)
 
         self.observation_space = spaces.Box(
@@ -327,10 +327,11 @@ class FlatCurrentReducedWrapper(ObservationWrapper):
         #print('obs.shape', obs.shape)
         return obs
 
+
 class NormalizeWrapperLunarLander(gym.ObservationWrapper):
     def __init__(self, env):
-        super().__init__(env)  
-    
+        super().__init__(env)
+
     def observation(self, obs):
         obs[0] = (obs[0] - 0) / 1.5
         obs[1] = (obs[1] - 0) / 1.5
@@ -340,15 +341,16 @@ class NormalizeWrapperLunarLander(gym.ObservationWrapper):
         obs[5] = (obs[5] - 0) / 5.0
         obs[6] = (obs[6] - 1) / 0.5
         obs[7] = (obs[7] - 1) / 0.5
-        
+
         return obs
+
 
 class AutoResetWrapper(gym.Wrapper):
     def __init__(self, env):
         super(AutoResetWrapper, self).__init__(env)
         self.reset_on_step = False
         self.reset_env()
-        
+
     def reset_env(self):
         # Generate a new random seed
         seed = random.randint(0, 1000000)
@@ -369,9 +371,8 @@ class AutoResetWrapper(gym.Wrapper):
         return self.observation, self.info
 
 
-
 def build_env(env_id, n_env, view_size=3):
-    if n_env > 1: 
+    if n_env > 1:
         env = gym.make(id=env_id) #, render_mode="rgb_array")
 
     else:
@@ -380,16 +381,14 @@ def build_env(env_id, n_env, view_size=3):
     if 'MiniGrid' in env_id:
         env = ViewSizeWrapper(env, agent_view_size=view_size)
         env = OneHotPartialObsWrapper(env)
-        env = FlatCurrentReducedWrapper(env) 
+        env = FlatCurrentReducedWrapper(env)
     elif 'LunarLander' in env_id:
         env = NormalizeWrapperLunarLander(env)
-        
+
     if n_env > 1:
         env = gym.wrappers.RecordEpisodeStatistics(env)
         env = gym.vector.AsyncVectorEnv([lambda: env for _ in range(n_env)])
     return env
-
-
 
 
 class ActorTrainState(TrainState):
@@ -416,14 +415,17 @@ class EpisodeStatistics:
     returned_episode_returns: jnp.array
     returned_episode_lengths: jnp.array
 
+
 @flax.struct.dataclass
 class ObservationActionBuffer:
     obs: jnp.array
     actions: jnp.array
 
+
 import jax
 import jax.numpy as jnp
 from flax.core import freeze, unfreeze
+
 
 def convert_to_discrete_tree(params, action_type, temperature=1.0):
     """
@@ -440,7 +442,7 @@ def convert_to_discrete_tree(params, action_type, temperature=1.0):
 
     beta = new_params['params']['SDT_0']['inner_nodes']['layers_0']['kernel']
     beta = entmax15JAX(beta.T / temperature).T
-    
+
     #print('beta', beta)
     phi = new_params['params']['SDT_0']['inner_nodes']['layers_0']['bias']
 
@@ -457,29 +459,30 @@ def convert_to_discrete_tree(params, action_type, temperature=1.0):
     normalized_phi = phi / jnp.sum(beta * one_hot_beta, axis=0)
     #print('one_hot_beta', one_hot_beta)
     #print('jnp.sum(beta * one_hot_beta, axis=-1)', jnp.sum(beta * one_hot_beta, axis=0))
-    
+
     # Update params
     new_params['params']['SDT_0']['inner_nodes']['layers_0']['kernel'] = one_hot_beta
     new_params['params']['SDT_0']['inner_nodes']['layers_0']['bias'] = normalized_phi
 
     if action_type == 'discrete':
         beta_leaf = new_params['params']['SDT_0']['leaf_nodes']['kernel']
-        
+
         # Obtain the index of the feature to use
         j = jnp.argmax(beta_leaf, axis=1)
-        
+
         # Create one-hot vector for beta
         one_hot_beta_leaf = jax.nn.one_hot(
                     j, num_classes=beta_leaf.shape[1]
                 )
-        
+
         # Update params
         new_params['params']['SDT_0']['leaf_nodes']['kernel'] = one_hot_beta_leaf
     else:
         log_std = new_params['params']['SDT_0']['log_std']
-        
+
         new_params['params']['SDT_0']['log_std'] = jnp.zeros_like(log_std)
     return freeze(new_params)
+
 
 def prune_and_merge_tree(node, split_ranges, constraints=None, continuous=False):
     """
@@ -510,7 +513,7 @@ def prune_and_merge_tree(node, split_ranges, constraints=None, continuous=False)
             # Return left child if it exists, otherwise right child if it exists, else None
             if split_value < min_value:# and node['right_child']['type'] != 'leaf':
                 if node['right_child']['type'] != 'leaf':
-                    return prune_and_merge_tree(node['right_child'], split_ranges, constraints, continuous=continuous)            
+                    return prune_and_merge_tree(node['right_child'], split_ranges, constraints, continuous=continuous)
                 else:
                     return node['right_child']
             elif split_value > max_value:# and node['left_child']['type'] != 'leaf':
@@ -520,7 +523,7 @@ def prune_and_merge_tree(node, split_ranges, constraints=None, continuous=False)
                     return node['left_child']
             else:
                 return None#node['left_child'] if node['left_child'] else node['right_child']
-    
+
     # Check if the current split is redundant based on constraints
     if split_index in constraints:
         min_constraint, max_constraint = constraints[split_index]
@@ -528,7 +531,7 @@ def prune_and_merge_tree(node, split_ranges, constraints=None, continuous=False)
             # The split is redundant, remove this node and move its child up
             if split_value <= max_constraint:# and node['right_child']['type'] != 'leaf':
                 if node['right_child']['type'] != 'leaf':
-                    return prune_and_merge_tree(node['right_child'], split_ranges, constraints, continuous=continuous)            
+                    return prune_and_merge_tree(node['right_child'], split_ranges, constraints, continuous=continuous)
                 else:
                     return node['right_child']
             elif split_value >= min_constraint:# and node['left_child']['type'] != 'leaf':
@@ -538,7 +541,6 @@ def prune_and_merge_tree(node, split_ranges, constraints=None, continuous=False)
                     return node['left_child']
             else:
                 return None#node['left_child'] if node['left_child'] else node['right_child']
-    
 
     # Update constraints based on the current split
     new_constraints_left = constraints.copy()
@@ -556,9 +558,9 @@ def prune_and_merge_tree(node, split_ranges, constraints=None, continuous=False)
     # Recursively prune and merge left and right children
     node['left_child'] = prune_and_merge_tree(node['left_child'], split_ranges, new_constraints_left, continuous=continuous)
     node['right_child'] = prune_and_merge_tree(node['right_child'], split_ranges, new_constraints_right, continuous=continuous)
-  
+
     # If both children are leaves with the same distribution, merge them
-    if (not continuous and 
+    if (not continuous and
         node['left_child'] and node['left_child']['type'] == 'leaf' and
         node['right_child'] and node['right_child']['type'] == 'leaf' and
         #node['left_child']['distribution'] == node['right_child']['distribution']):
@@ -571,9 +573,11 @@ def prune_and_merge_tree(node, split_ranges, constraints=None, continuous=False)
 
     return node
 
+
 import graphviz
 import numpy as np
 from IPython.display import Image
+
 
 def convert_to_child_representation(split_values, split_indices, leaf_values, features_by_estimator):
     num_internal_nodes = split_values.shape[0]
@@ -610,6 +614,7 @@ def convert_to_child_representation(split_values, split_indices, leaf_values, fe
 
     return build_tree(0)
 
+
 def plot_tree_from_representation(tree, image_path, filename_appendix='', observation_labels=None, continuous=False):
     def add_nodes_edges(tree, dot=None):
         if dot is None:
@@ -628,7 +633,7 @@ def plot_tree_from_representation(tree, image_path, filename_appendix='', observ
                 if observation_labels is not None:
                     label = f"{observation_labels[node['split_index']]} <= {node['split_value']:.2f}?"
                 else:
-                    label = f"X{node['split_index']} <= {node['split_value']:.2f}?"                
+                    label = f"X{node['split_index']} <= {node['split_value']:.2f}?"
                 node_id = str(id(node))
                 dot.node(node_id, label)
                 traverse(node['left_child'], node_id)
@@ -645,18 +650,18 @@ def plot_tree_from_representation(tree, image_path, filename_appendix='', observ
     return image_path
 
 
-
 def count_nodes(tree):
     if tree['type'] == 'leaf':
         return {'internal': 0, 'leaf': 1}
-    
+
     left_counts = count_nodes(tree['left_child'])
     right_counts = count_nodes(tree['right_child'])
-    
+
     return {
         'internal': 1 + left_counts['internal'] + right_counts['internal'],
         'leaf': left_counts['leaf'] + right_counts['leaf']
     }
+
 
 def plot_decision_tree(split_values, split_indices, leaf_values, features_by_estimator, image_path, observation_labels=None, filename_appendix='', env=None, env_params=None, prune=True, continuous=False):
 
@@ -674,7 +679,7 @@ def plot_decision_tree(split_values, split_indices, leaf_values, features_by_est
             elif isinstance(observation_space, gymnax.environments.spaces.Discrete):
                 ranges_dict = {}
                 for i in range(observation_space.n):
-                    ranges_dict[i] = [0,1]       
+                    ranges_dict[i] = [0,1]
                 print(ranges_dict)
             else:
                 print("Observation Space type is not handled in this snippet.")
@@ -684,8 +689,8 @@ def plot_decision_tree(split_values, split_indices, leaf_values, features_by_est
             if 'MiniGrid' in env_name:
                 ranges_dict = {}
                 for i, range_tuple in enumerate(np.vstack([observation_space.low, observation_space.high]).T):
-                    ranges_dict[i] = [-1,1]      
-                print(ranges_dict)            
+                    ranges_dict[i] = [-1,1]
+                print(ranges_dict)
             else:
                 if isinstance(observation_space, gym.spaces.Box):
                     ranges_dict = {}
@@ -695,19 +700,21 @@ def plot_decision_tree(split_values, split_indices, leaf_values, features_by_est
                 elif isinstance(observation_space, gym.spaces.Discrete):
                     ranges_dict = {}
                     for i in range(observation_space.n):
-                        ranges_dict[i] = [0,1]      
+                        ranges_dict[i] = [0,1]
                     print(ranges_dict)
-                else:           
+                else:
                     print("Observation Space type is not handled in this snippet.")
         tree_representation = prune_and_merge_tree(tree_representation, ranges_dict, continuous=continuous)
     node_count = count_nodes(tree_representation)
     plot_path = plot_tree_from_representation(tree_representation, image_path, filename_appendix='', observation_labels=observation_labels, continuous=continuous)
-    
+
     return plot_path, node_count['internal'] + node_count['leaf']
+
 
 import graphviz
 import numpy as np
 from IPython.display import Image
+
 
 def convert_to_child_representation_soft(split_values, split_indices, leaf_values, temperature):
     num_internal_nodes = split_values.shape[0]
@@ -723,7 +730,7 @@ def convert_to_child_representation_soft(split_values, split_indices, leaf_value
                 'distribution': leaf_dist.tolist()
             }
         else:
-            
+
             split_index = entmax15JAX(split_indices[node_id].T / temperature).T
             split_value = split_values[node_id]
 
@@ -740,6 +747,7 @@ def convert_to_child_representation_soft(split_values, split_indices, leaf_value
 
     return build_tree(0)
 
+
 def plot_tree_from_representation_soft(tree, image_path, filename_appendix='', observation_labels=None):
     def add_nodes_edges(tree, dot=None):
         if dot is None:
@@ -755,7 +763,7 @@ def plot_tree_from_representation_soft(tree, image_path, filename_appendix='', o
                     node['split_value'] = 0.99
                 elif np.round(node['split_value']) == -1 and node['split_value'] > -1:
                     node['split_value'] = -0.99
-                label = f"{np.round(node['split_index'], 2)} - {node['split_value']:.2f}?"                
+                label = f"{np.round(node['split_index'], 2)} - {node['split_value']:.2f}?"
                 node_id = str(id(node))
                 dot.node(node_id, label)
                 traverse(node['left_child'], node_id)
@@ -778,5 +786,5 @@ def plot_decision_tree_soft(split_values, split_indices, leaf_values, image_path
 
     node_count = count_nodes(tree_representation)
     plot_path = plot_tree_from_representation_soft(tree_representation, image_path, filename_appendix='', observation_labels=observation_labels)
-    
+
     return plot_path, node_count['internal'] + node_count['leaf']
