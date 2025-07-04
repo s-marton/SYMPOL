@@ -99,7 +99,7 @@ class RandomGoalDistShiftEnv(DistShiftEnv):
         super()._gen_grid(width, height)
 
         # Remove the old goal
-        self.grid.set(width-2, 1, None)
+        self.grid.set(width - 2, 1, None)
 
         # Randomly place the goal somewhere in the grid
         while True:
@@ -127,7 +127,7 @@ class RandomGoalDistShiftEnv2(DistShiftEnv):
         super()._gen_grid(width, height)
 
         # Remove the old goal
-        self.grid.set(width-2, 1, None)
+        self.grid.set(width - 2, 1, None)
 
         # Randomly place the goal somewhere in the grid
         while True:
@@ -163,6 +163,7 @@ class FlatCurrentWrapper(ObservationWrapper):
         >>> obs, _ = env_obs.reset()
         >>> obs.shape
         (2835,)
+
     """
 
     def __init__(self, env, maxStrLen=96):
@@ -256,6 +257,7 @@ class FlatCurrentReducedWrapper(ObservationWrapper):
         >>> obs, _ = env_obs.reset()
         >>> obs.shape
         (2835,)
+
     """
 
     def __init__(self, env, maxStrLen=96):
@@ -263,7 +265,7 @@ class FlatCurrentReducedWrapper(ObservationWrapper):
 
         imgSpace = env.observation_space.spaces["image"]
 
-        self.select_indices = [0,1,2,8,9]
+        self.select_indices = [0, 1, 2, 8, 9]
         # Define a mapping from environment names to select indices
         env_select_indices = {
             "DistShift": [0, 1, 2, 8, 9], # left, right, forward
@@ -320,7 +322,7 @@ class FlatCurrentReducedWrapper(ObservationWrapper):
         mission = obs["mission"]
         #print('image.shape', image.shape)
         #print('image.flatten().shape', image.flatten().shape)
-        obs = image[:,:,self.select_indices].flatten().astype(np.float32)
+        obs = image[:, :, self.select_indices].flatten().astype(np.float32)
         obs = obs * 2 - 1 # convert to range -1,1 instead of 0,1
 
         #obs =
@@ -436,6 +438,7 @@ def convert_to_discrete_tree(params, action_type, temperature=1.0):
 
     Returns:
         dict: The parameters of the discrete decision tree.
+
     """
     # Create a deep copy of the parameters to avoid modifying the original parameters
     new_params = unfreeze(copy.deepcopy(params))
@@ -490,12 +493,13 @@ def prune_and_merge_tree(node, split_ranges, constraints=None, continuous=False)
     and remove redundant paths that cannot be taken because previous splits already predetermine the path.
 
     Args:
-    - node (dict): The decision tree node (root node initially).
-    - split_ranges (dict): A dictionary where keys are split indices and values are tuples of (min_value, max_value).
-    - constraints (dict): A dictionary to keep track of constraints on split indices.
+        - node (dict): The decision tree node (root node initially).
+        - split_ranges (dict): A dictionary where keys are split indices and values are tuples of (min_value, max_value).
+        - constraints (dict): A dictionary to keep track of constraints on split indices.
 
     Returns:
-    - dict: The pruned and merged decision tree or the subtree if the current node is pruned.
+        - dict: The pruned and merged decision tree or the subtree if the current node is pruned.
+
     """
     if constraints is None:
         constraints = {}
@@ -511,12 +515,12 @@ def prune_and_merge_tree(node, split_ranges, constraints=None, continuous=False)
         if split_value < min_value or split_value > max_value:
             # If the split value is outside the range, prune this node
             # Return left child if it exists, otherwise right child if it exists, else None
-            if split_value < min_value:# and node['right_child']['type'] != 'leaf':
+            if split_value < min_value: # and node['right_child']['type'] != 'leaf':
                 if node['right_child']['type'] != 'leaf':
                     return prune_and_merge_tree(node['right_child'], split_ranges, constraints, continuous=continuous)
                 else:
                     return node['right_child']
-            elif split_value > max_value:# and node['left_child']['type'] != 'leaf':
+            elif split_value > max_value: # and node['left_child']['type'] != 'leaf':
                 if node['left_child']['type'] != 'leaf':
                     return prune_and_merge_tree(node['left_child'], split_ranges, constraints, continuous=continuous)
                 else:
@@ -529,12 +533,12 @@ def prune_and_merge_tree(node, split_ranges, constraints=None, continuous=False)
         min_constraint, max_constraint = constraints[split_index]
         if (split_value >= min_constraint) or (split_value <= max_constraint):
             # The split is redundant, remove this node and move its child up
-            if split_value <= max_constraint:# and node['right_child']['type'] != 'leaf':
+            if split_value <= max_constraint: # and node['right_child']['type'] != 'leaf':
                 if node['right_child']['type'] != 'leaf':
                     return prune_and_merge_tree(node['right_child'], split_ranges, constraints, continuous=continuous)
                 else:
                     return node['right_child']
-            elif split_value >= min_constraint:# and node['left_child']['type'] != 'leaf':
+            elif split_value >= min_constraint: # and node['left_child']['type'] != 'leaf':
                 if node['left_child']['type'] != 'leaf':
                     return prune_and_merge_tree(node['left_child'], split_ranges, constraints, continuous=continuous)
                 else:
@@ -589,7 +593,7 @@ def convert_to_child_representation(split_values, split_indices, leaf_values, fe
             leaf_dist = leaf_values[leaf_index]
             return {
                 'type': 'leaf',
-                'action': leaf_dist,#np.argmax(leaf_dist),
+                'action': leaf_dist, #np.argmax(leaf_dist),
                 'distribution': leaf_dist.tolist()
             }
         else:
@@ -679,7 +683,7 @@ def plot_decision_tree(split_values, split_indices, leaf_values, features_by_est
             elif isinstance(observation_space, gymnax.environments.spaces.Discrete):
                 ranges_dict = {}
                 for i in range(observation_space.n):
-                    ranges_dict[i] = [0,1]
+                    ranges_dict[i] = [0, 1]
                 print(ranges_dict)
             else:
                 print("Observation Space type is not handled in this snippet.")
@@ -689,7 +693,7 @@ def plot_decision_tree(split_values, split_indices, leaf_values, features_by_est
             if 'MiniGrid' in env_name:
                 ranges_dict = {}
                 for i, range_tuple in enumerate(np.vstack([observation_space.low, observation_space.high]).T):
-                    ranges_dict[i] = [-1,1]
+                    ranges_dict[i] = [-1, 1]
                 print(ranges_dict)
             else:
                 if isinstance(observation_space, gym.spaces.Box):
@@ -700,7 +704,7 @@ def plot_decision_tree(split_values, split_indices, leaf_values, features_by_est
                 elif isinstance(observation_space, gym.spaces.Discrete):
                     ranges_dict = {}
                     for i in range(observation_space.n):
-                        ranges_dict[i] = [0,1]
+                        ranges_dict[i] = [0, 1]
                     print(ranges_dict)
                 else:
                     print("Observation Space type is not handled in this snippet.")

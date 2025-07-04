@@ -55,7 +55,7 @@ class SDT(nn.Module):
         self.leaf_node_num = 2 ** self.depth
 
         self.inner_nodes = nn.Sequential([
-            SubtractiveEntmaxDense(self.internal_node_num, self.temperature),#, use_bias=True, kernel_init=normal(0.1), bias_init=normal(1.0)),
+            SubtractiveEntmaxDense(self.internal_node_num, self.temperature), #, use_bias=True, kernel_init=normal(0.1), bias_init=normal(1.0)),
             #nn.sigmoid
             #lambda x: temperature_sigmoid(x, self.temperature)
             #lambda x: entmoid15(x, self.temperature)
@@ -164,7 +164,7 @@ def top_k_over_axisJAX(inputs, k, axis=-1, **kwargs):
 
 
 def _make_ix_like(inputs, axis=-1):
-    """creates indices 0, ... , input[axis] unsqueezed to input dimensios"""
+    """Creates indices 0, ... , input[axis] unsqueezed to input dimensions"""
     assert jnp.ndim(inputs) is not None
     rho = jnp.arange(1, inputs.shape[axis] + 1, dtype=jnp.float32)
     view = [1] * jnp.ndim(inputs)

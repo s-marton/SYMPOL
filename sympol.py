@@ -91,7 +91,7 @@ class SYMPOL_RL:
 
         features_by_estimator = jnp.stack(
             [
-                jax.random.choice(random_key+i, self.obs_dim, shape=(selected_variables,), replace=False, p=None)
+                jax.random.choice(random_key + i, self.obs_dim, shape=(selected_variables,), replace=False, p=None)
                 for i in range(self.n_estimators)
             ]
         )
@@ -223,7 +223,7 @@ def top_k_over_axisJAX(inputs, k, axis=-1, **kwargs):
 
 
 def _make_ix_like(inputs, axis=-1):
-    """creates indices 0, ... , input[axis] unsqueezed to input dimensios"""
+    """Creates indices 0, ... , input[axis] unsqueezed to input dimensions"""
     assert jnp.ndim(inputs) is not None
     rho = jnp.arange(1, inputs.shape[axis] + 1, dtype=jnp.float32)
     view = [1] * jnp.ndim(inputs)

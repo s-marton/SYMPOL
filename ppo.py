@@ -125,12 +125,12 @@ def train_agent(args, trial=None, queue=None):
     #eval_freq = max(args.eval_freq // batch_size, 1)
 
     trial_scores = []
-    for random_trial_number in range(1, args.random_trials+1):
+    for random_trial_number in range(1, args.random_trials + 1):
 
         if args.actor == 'sympol':
             model_identifier = '-'.join([str(args.depth), str(args.n_estimators), str(args.seed)])
         elif args.actor != 'mlp':
-            model_identifier = '-'.join([str(args.depth),  str(args.seed)])
+            model_identifier = '-'.join([str(args.depth), str(args.seed)])
         else:
             model_identifier = str(args.seed)
 
@@ -147,16 +147,16 @@ def train_agent(args, trial=None, queue=None):
         if isinstance(envs.single_action_space, gym.spaces.Discrete):
             if any(substring in args.env_id for substring in ['Crossing', 'DistShift', 'Empty', 'LavaGap', 'FourRooms', 'Dynamic-Obstacles']):
                 action_dim = 3
-                action_indices = [0,1,2]
+                action_indices = [0, 1, 2]
             elif any(substring in args.env_id for substring in ['MultiRoom', 'Unlock', 'GoToDoor', 'RedBlueDoors']):
                 action_dim = 4
                 if 'GoToDoor' in args.env_id:
-                    action_indices = [0,1,2,6]
+                    action_indices = [0, 1, 2, 6]
                 else:
-                    action_indices = [0,1,2,5]
+                    action_indices = [0, 1, 2, 5]
             elif any(substring in args.env_id for substring in ['UnlockPickup', 'DoorKey']):
                 action_dim = 5
-                action_indices = [0,1,2,3,5]
+                action_indices = [0, 1, 2, 3, 5]
             #elif any(substring in args.env_id for substring in ['forex']):
             #    action_dim = 2
             else:
@@ -265,7 +265,7 @@ def train_agent(args, trial=None, queue=None):
                                  'split_values': optax.inject_hyperparams(optax.adam)(learning_rate_actor_split_values),
                                  'split_idx_array': optax.inject_hyperparams(optax.adamw)(learning_rate_actor_split_idx_array),
                                  'leaf_array': optax.inject_hyperparams(optax.adamw)(learning_rate_actor_leaf_array),
-                                 'log_std': optax.inject_hyperparams(optax.adamw)(learning_rate_actor_log_std),},
+                                 'log_std': optax.inject_hyperparams(optax.adamw)(learning_rate_actor_log_std), },
                                 map_nested_fn(lambda k, _: k)),
                                 swag(10, 2),
                         ),
@@ -285,7 +285,7 @@ def train_agent(args, trial=None, queue=None):
                                  'split_values': optax.inject_hyperparams(optax.adam)(learning_rate_actor_split_values),
                                  'split_idx_array': optax.inject_hyperparams(optax.adam)(learning_rate_actor_split_idx_array),
                                  'leaf_array': optax.inject_hyperparams(optax.adam)(learning_rate_actor_leaf_array),
-                                 'log_std': optax.inject_hyperparams(optax.adam)(learning_rate_actor_log_std),},
+                                 'log_std': optax.inject_hyperparams(optax.adam)(learning_rate_actor_log_std), },
                                 map_nested_fn(lambda k, _: k)),
                                 swag(10, 2),
                         ),
@@ -306,7 +306,7 @@ def train_agent(args, trial=None, queue=None):
                                  'split_values': optax.inject_hyperparams(optax.adam)(learning_rate_actor_split_values),
                                  'split_idx_array': optax.inject_hyperparams(optax.adamw)(learning_rate_actor_split_idx_array),
                                  'leaf_array': optax.inject_hyperparams(optax.adamw)(learning_rate_actor_leaf_array),
-                                 'log_std': optax.inject_hyperparams(optax.adamw)(learning_rate_actor_log_std),},
+                                 'log_std': optax.inject_hyperparams(optax.adamw)(learning_rate_actor_log_std), },
                                 map_nested_fn(lambda k, _: k)),
                         ),
                         grad_accum=jax.tree.map(
@@ -325,7 +325,7 @@ def train_agent(args, trial=None, queue=None):
                                  'split_values': optax.inject_hyperparams(optax.adam)(learning_rate_actor_split_values),
                                  'split_idx_array': optax.inject_hyperparams(optax.adam)(learning_rate_actor_split_idx_array),
                                  'leaf_array': optax.inject_hyperparams(optax.adam)(learning_rate_actor_leaf_array),
-                                 'log_std': optax.inject_hyperparams(optax.adam)(learning_rate_actor_log_std),},
+                                 'log_std': optax.inject_hyperparams(optax.adam)(learning_rate_actor_log_std), },
                                 map_nested_fn(lambda k, _: k)),
                         ),
                         grad_accum=jax.tree.map(
@@ -384,7 +384,7 @@ def train_agent(args, trial=None, queue=None):
             step: int,
             key: jax.random.PRNGKey,
         ):
-            """sample action, calculate value, logprob, entropy, and update storage"""
+            """Sample action, calculate value, logprob, entropy, and update storage"""
             if args.action_type == "discrete":
                 action_logits = actor.apply(actor_state.params, next_obs, indices=actor_state.indices)
                 action_distribution = distrax.Categorical(logits=action_logits)
@@ -430,7 +430,7 @@ def train_agent(args, trial=None, queue=None):
             x: np.ndarray,
             action: np.ndarray,
         ):
-            """calculate value, logprob of supplied `action`, and entropy"""
+            """Calculate value, logprob of supplied `action`, and entropy"""
             if args.action_type == "discrete":
                 logits = actor.apply(actor_state_params, x, indices=actor_state.indices)
                 value = critic.apply(critic_state_params, x).squeeze()
@@ -628,8 +628,8 @@ def train_agent(args, trial=None, queue=None):
             #increase_index = global_step // (args.total_steps//len(increase_factor_list))
             if args.dynamic_buffer or not args.static_batch:
                 #increase_index = global_step // (args.total_steps//sum(increase_factor_list))
-                increase_factor = int(2**(np.ceil((((global_step+1)*8)/(1+args.total_steps)))-1)) # int(increase_factor_list_long[increase_index])
-                increase_factor_batch = int(2**(np.ceil((((global_step+1)*8)/(1+args.total_steps)))-1)) # int(increase_factor_list_long[increase_index])
+                increase_factor = int(2**(np.ceil((((global_step + 1) * 8) / (1 + args.total_steps))) - 1)) # int(increase_factor_list_long[increase_index])
+                increase_factor_batch = int(2**(np.ceil((((global_step + 1) * 8) / (1 + args.total_steps))) - 1)) # int(increase_factor_list_long[increase_index])
                 if args.dynamic_buffer:
                     n_steps = initial_steps * increase_factor
                 else:
@@ -752,7 +752,7 @@ def train_agent(args, trial=None, queue=None):
                     else:
                         for i in range(action_dim):
                             y = np.array(action_obs_store.actions).reshape(-1, action_dim)
-                            decision_tree[i].fit(X, y[:,i])
+                            decision_tree[i].fit(X, y[:, i])
 
                     return decision_tree
 
@@ -770,7 +770,7 @@ def train_agent(args, trial=None, queue=None):
                         if args.actor == "stateActionDT":
                             #temp_env = build_env(env_id, n_env=1)
                             temp_env = build_env(env_id, n_env=1, view_size=args.view_size)
-                            video_path = os.path.join(video_folder, run_name + "-" + "-" + env_id  + str(episode_index) + ".mp4")
+                            video_path = os.path.join(video_folder, run_name + "-" + "-" + env_id + str(episode_index) + ".mp4")
                             image_path = os.path.join(video_folder, run_name + "-" + "-" + env_id)#  + str(episode_index))
 
                             done, trunc = False, False
@@ -787,9 +787,9 @@ def train_agent(args, trial=None, queue=None):
                                     draw = ImageDraw.Draw(image)
                                     text_step = f'Step: {step_counter}'
                                     font_size = frame.shape[0] // 20
-                                    draw.text((font_size, font_size*0.5), text_step, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
+                                    draw.text((font_size, font_size * 0.5), text_step, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
                                     text_reward = f'Reward: {running_reward}'
-                                    draw.text((font_size, font_size*2.0), text_reward, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
+                                    draw.text((font_size, font_size * 2.0), text_reward, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
 
                                     frames.append(np.array(image))
 
@@ -824,9 +824,9 @@ def train_agent(args, trial=None, queue=None):
                                     draw = ImageDraw.Draw(image)
                                     text_step = f'Step: {step_counter}'
                                     font_size = frame.shape[0] // 20
-                                    draw.text((font_size, font_size*0.5), text_step, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
+                                    draw.text((font_size, font_size * 0.5), text_step, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
                                     text_reward = f'Reward: {running_reward}'
-                                    draw.text((font_size, font_size*2.0), text_reward, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
+                                    draw.text((font_size, font_size * 2.0), text_reward, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
 
                                     frames.append(np.array(image))
 
@@ -836,7 +836,7 @@ def train_agent(args, trial=None, queue=None):
                                         wandb.log({"gameplay_" + name_appendix + '_trial' + str(episode_index): wandb.Video(numpy_clip, fps=fps, format="mp4")}, commit=False)
                                         #wandb_log["gameplay_" + name_appendix + '_trial' + str(episode_index)] = wandb.Video(numpy_clip, fps=fps, format="mp4")
 
-                                if episode_index==0:
+                                if episode_index == 0:
                                     if args.action_type == 'discrete' or action_dim == 1:
                                         # Plot the decision tree
                                         plt.figure(figsize=(20, 10))
@@ -874,7 +874,7 @@ def train_agent(args, trial=None, queue=None):
 
                             #temp_env = build_env(env_id, n_env=1)
                             temp_env = build_env(env_id, n_env=1, view_size=args.view_size)
-                            video_path = os.path.join(video_folder, run_name + "-" + "-" + env_id  + str(episode_index) + ".mp4")
+                            video_path = os.path.join(video_folder, run_name + "-" + "-" + env_id + str(episode_index) + ".mp4")
                             image_path = os.path.join(video_folder, run_name + "-" + "-" + env_id)#  + str(episode_index))
 
                             done, trunc = False, False
@@ -891,9 +891,9 @@ def train_agent(args, trial=None, queue=None):
                                     draw = ImageDraw.Draw(image)
                                     text_step = f'Step: {step_counter}'
                                     font_size = frame.shape[0] // 20
-                                    draw.text((font_size, font_size*0.5), text_step, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
+                                    draw.text((font_size, font_size * 0.5), text_step, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
                                     text_reward = f'Reward: {running_reward}'
-                                    draw.text((font_size, font_size*2.0), text_reward, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
+                                    draw.text((font_size, font_size * 2.0), text_reward, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
 
                                     frames.append(np.array(image))
 
@@ -931,9 +931,9 @@ def train_agent(args, trial=None, queue=None):
                                     draw = ImageDraw.Draw(image)
                                     text_step = f'Step: {step_counter}'
                                     font_size = frame.shape[0] // 20
-                                    draw.text((font_size, font_size*0.5), text_step, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
+                                    draw.text((font_size, font_size * 0.5), text_step, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
                                     text_reward = f'Reward: {running_reward}'
-                                    draw.text((font_size, font_size*2.0), text_reward, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
+                                    draw.text((font_size, font_size * 2.0), text_reward, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
 
                                     frames.append(np.array(image))
 
@@ -942,8 +942,8 @@ def train_agent(args, trial=None, queue=None):
                                     if args.track:
                                         wandb.log({"gameplay_" + name_appendix + '_trial' + str(episode_index): wandb.Video(numpy_clip, fps=fps, format="mp4")}, commit=False)
                                         #wandb_log["gameplay_" + name_appendix + '_trial' + str(episode_index)] = wandb.Video(numpy_clip, fps=fps, format="mp4")
-                                if episode_index==0:
-                                    split_values = actor_params_discrete['params']['SDT_0']['inner_nodes']['layers_0']['kernel'].T * jnp.expand_dims(actor_params_discrete['params']['SDT_0']['inner_nodes']['layers_0']['bias'],1)
+                                if episode_index == 0:
+                                    split_values = actor_params_discrete['params']['SDT_0']['inner_nodes']['layers_0']['kernel'].T * jnp.expand_dims(actor_params_discrete['params']['SDT_0']['inner_nodes']['layers_0']['bias'], 1)
                                     split_indices = actor_params_discrete['params']['SDT_0']['inner_nodes']['layers_0']['kernel'].T
                                     leaf_values = actor_params_discrete['params']['SDT_0']['leaf_nodes']['kernel']
 
@@ -954,15 +954,15 @@ def train_agent(args, trial=None, queue=None):
                                                                     features_by_estimator=[i for i in range(obs_dim)],
                                                                     image_path=image_path,
                                                                     observation_labels=None if args.env_id not in OBSERVATION_LABELS.keys() else OBSERVATION_LABELS[args.env_id],
-                                                                    filename_appendix = 'D-SDT',
+                                                                    filename_appendix='D-SDT',
                                                                     env=temp_env,
                                                                     #env_params=None,
                                                                     prune=True,
-                                                                    continuous = args.action_type != 'discrete'
+                                                                    continuous=args.action_type != 'discrete'
                                                                    )
                                     image_path_plot = image_path + '.png'
                                     if args.track:
-                                        wandb.log({"D-SDT_"+ name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
+                                        wandb.log({"D-SDT_" + name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
 
                                     image_path_complete = image_path + '_COMPLETE'
                                     image_path_complete, _ = plot_decision_tree(
@@ -972,22 +972,22 @@ def train_agent(args, trial=None, queue=None):
                                                                     features_by_estimator=[i for i in range(obs_dim)],
                                                                     image_path=image_path_complete,
                                                                     observation_labels=None if args.env_id not in OBSERVATION_LABELS.keys() else OBSERVATION_LABELS[args.env_id],
-                                                                    filename_appendix = 'D-SDT',
+                                                                    filename_appendix='D-SDT',
                                                                     env=temp_env,
                                                                     #env_params=None,
                                                                     prune=False,
-                                                                    continuous = args.action_type != 'discrete'
+                                                                    continuous=args.action_type != 'discrete'
                                                                    )
 
                                     image_path_plot = image_path_complete + '.png'
                                     if args.track:
-                                        wandb.log({"D-SDT_COMPLETE"+ name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
+                                        wandb.log({"D-SDT_COMPLETE" + name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
 
                             temp_env.close()
 
                         #temp_env = build_env(env_id, n_env=1)
                         temp_env = build_env(env_id, n_env=1, view_size=args.view_size)
-                        video_path = os.path.join(video_folder, run_name + "-" + "-" + env_id  + str(episode_index) + ".mp4")
+                        video_path = os.path.join(video_folder, run_name + "-" + "-" + env_id + str(episode_index) + ".mp4")
                         image_path = os.path.join(video_folder, run_name + "-" + "-" + env_id)#  + str(episode_index))
 
                         done, trunc = False, False
@@ -1004,9 +1004,9 @@ def train_agent(args, trial=None, queue=None):
                                 draw = ImageDraw.Draw(image)
                                 text_step = f'Step: {step_counter}'
                                 font_size = frame.shape[0] // 20
-                                draw.text((font_size, font_size*0.5), text_step, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
+                                draw.text((font_size, font_size * 0.5), text_step, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
                                 text_reward = f'Reward: {running_reward}'
-                                draw.text((font_size, font_size*2.0), text_reward, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
+                                draw.text((font_size, font_size * 2.0), text_reward, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
 
                                 frames.append(np.array(image))
 
@@ -1042,9 +1042,9 @@ def train_agent(args, trial=None, queue=None):
                                 draw = ImageDraw.Draw(image)
                                 text_step = f'Step: {step_counter}'
                                 font_size = frame.shape[0] // 20
-                                draw.text((font_size, font_size*0.5), text_step, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
+                                draw.text((font_size, font_size * 0.5), text_step, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
                                 text_reward = f'Reward: {running_reward}'
-                                draw.text((font_size, font_size*2.0), text_reward, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
+                                draw.text((font_size, font_size * 2.0), text_reward, (200, 200, 200), font=ImageFont.truetype("DejaVuSansMono-Bold.ttf", font_size))
 
                                 frames.append(np.array(image))
 
@@ -1054,7 +1054,7 @@ def train_agent(args, trial=None, queue=None):
                                     wandb.log({"gameplay_" + name_appendix + '_trial' + str(episode_index): wandb.Video(numpy_clip, fps=fps, format="mp4")}, commit=False)
                                     #wandb_log["gameplay_" + name_appendix + '_trial' + str(episode_index)] = wandb.Video(numpy_clip, fps=fps, format="mp4")
 
-                            if args.n_estimators <= 5 and args.actor == "sympol" and episode_index==0:
+                            if args.n_estimators <= 5 and args.actor == "sympol" and episode_index == 0:
                                 for estimator_number in range(args.n_estimators):
                                     filename_appendix = '_' + str(estimator_number)
                                     image_path, node_count = plot_decision_tree(
@@ -1064,15 +1064,15 @@ def train_agent(args, trial=None, queue=None):
                                                                     features_by_estimator=actor_state.indices['features_by_estimator'][estimator_number],
                                                                     image_path=image_path,
                                                                     observation_labels=None if args.env_id not in OBSERVATION_LABELS.keys() else OBSERVATION_LABELS[args.env_id],
-                                                                    filename_appendix = filename_appendix,
+                                                                    filename_appendix=filename_appendix,
                                                                     env=temp_env,
                                                                     #env_params=None,
                                                                     prune=True,
-                                                                    continuous = args.action_type != 'discrete'
+                                                                    continuous=args.action_type != 'discrete'
                                                                    )
                                 image_path_plot = image_path + '.png'
                                 if args.track:
-                                    wandb.log({"DT_"+ name_appendix + '_trial' + str(episode_index) + '_estNumber' + str(estimator_number): wandb.Image(image_path_plot)}, commit=False)
+                                    wandb.log({"DT_" + name_appendix + '_trial' + str(episode_index) + '_estNumber' + str(estimator_number): wandb.Image(image_path_plot)}, commit=False)
                                 for estimator_number in range(args.n_estimators):
                                     filename_appendix = '_' + str(estimator_number)
                                     image_path_complete = image_path + '_COMPLETE'
@@ -1083,16 +1083,16 @@ def train_agent(args, trial=None, queue=None):
                                                                     features_by_estimator=actor_state.indices['features_by_estimator'][estimator_number],
                                                                     image_path=image_path_complete,
                                                                     observation_labels=None if args.env_id not in OBSERVATION_LABELS.keys() else OBSERVATION_LABELS[args.env_id],
-                                                                    filename_appendix = filename_appendix,
+                                                                    filename_appendix=filename_appendix,
                                                                     env=temp_env,
                                                                     #env_params=None,
                                                                     prune=False,
-                                                                    continuous = args.action_type != 'discrete'
+                                                                    continuous=args.action_type != 'discrete'
                                                                    )
 
                                 image_path_plot = image_path_complete + '.png'
-                                wandb.log({"DT_COMPLETE"+ name_appendix + '_trial' + str(episode_index) + '_estNumber' + str(estimator_number): wandb.Image(image_path_plot)}, commit=False)
-                            elif (args.actor == 'sdt' or args.actor == 'd-sdt') and episode_index==0:
+                                wandb.log({"DT_COMPLETE" + name_appendix + '_trial' + str(episode_index) + '_estNumber' + str(estimator_number): wandb.Image(image_path_plot)}, commit=False)
+                            elif (args.actor == 'sdt' or args.actor == 'd-sdt') and episode_index == 0:
 
                                 split_values = actor_params['params']['SDT_0']['inner_nodes']['layers_0']['bias']
                                 split_indices = actor_params['params']['SDT_0']['inner_nodes']['layers_0']['kernel'].T
@@ -1104,14 +1104,14 @@ def train_agent(args, trial=None, queue=None):
                                                                 leaf_values=leaf_values,
                                                                 image_path=image_path,
                                                                 observation_labels=None if args.env_id not in OBSERVATION_LABELS.keys() else OBSERVATION_LABELS[args.env_id],
-                                                                filename_appendix =  'SDT',
+                                                                filename_appendix='SDT',
                                                                 temperature=args.temperature,
                                                                )
                                 if args.actor == 'sdt':
                                     node_count = node_count_sdt
                                 image_path_plot = image_path + '.png'
                                 if args.track:
-                                    wandb.log({"SDT_"+ name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
+                                    wandb.log({"SDT_" + name_appendix + '_trial' + str(episode_index): wandb.Image(image_path_plot)}, commit=False)
 
                         temp_env.close()
 
@@ -1215,7 +1215,7 @@ def train_agent(args, trial=None, queue=None):
                             wandb_log['charts/std_score_test'] = std_score_interpretable_test
                             wandb_log['charts/std_score_fully_complexity_test'] = std_score_test
                             wandb_log['charts/score_list_test'] = score_interpretable_test
-                            wandb_log['charts/score_fully_complexity_list_test'] =  score_test
+                            wandb_log['charts/score_fully_complexity_list_test'] = score_test
 
                     else:
                         print(f"global_step={global_step}, avg_eval_episodic_return={avg_score_test} (Elapsed time: {elapsed_time} seconds)")
@@ -1231,7 +1231,7 @@ def train_agent(args, trial=None, queue=None):
                     while False:
                         #Evaluate next complexity level
                         string_list = args.env_id.split("-")
-                        complexity_level_new = str(int(string_list[-2][-1])+complexity_add)
+                        complexity_level_new = str(int(string_list[-2][-1]) + complexity_add)
                         string_list[-2] = string_list[-2][:-1] + complexity_level_new
                         env_id_new = "-".join(string_list)
                         avg_score = evaluate_agent(actor_state, env_id_new, n_episodes=args.n_eval_episodes, name_appendix='complexity+' + str(complexity_add))

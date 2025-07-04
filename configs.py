@@ -1114,7 +1114,7 @@ minigrid_distshift1 = {
         "gae_lambda": 0.95,
         "gamma": 0.999,
 
-        "learning_rate_actor_weights":0.03580088868256987,
+        "learning_rate_actor_weights": 0.03580088868256987,
         "learning_rate_actor_split_values": 0.0002680425031090237,
         "learning_rate_actor_split_idx_array": 0.008701058712472901,
         "learning_rate_actor_leaf_array": 0.0005740321057491008,
