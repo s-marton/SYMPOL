@@ -1416,6 +1416,8 @@ def train_agent(args, trial=None, queue=None):
                     pass
     
             if args.checkpoint:
+                import orbax
+                from flax.training import orbax_utils
                 checkpoint_path = os.path.join(args.path, args.run_name)
                 os.makedirs(checkpoint_path, exist_ok=True)
                 ckpt = {'sympol': actor_state}
