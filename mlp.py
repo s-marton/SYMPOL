@@ -9,7 +9,7 @@ from flax.linen.initializers import constant, orthogonal
 class Critic_MLP(nn.Module):
     num_layers: int = 2
     neurons_per_layer: int = 256
-    
+
     @nn.compact
     def __call__(self, x: jnp.ndarray, **kwargs):
         for layer in range(self.num_layers):
@@ -23,7 +23,7 @@ class Actor_MLP(nn.Module):
     action_dim: int
     num_layers: int = 2
     neurons_per_layer: int = 256
-    
+
     @nn.compact
     def __call__(self, obs: jnp.ndarray, **kwargs):
         for layer in range(self.num_layers):
@@ -32,11 +32,12 @@ class Actor_MLP(nn.Module):
             obs = nn.Dense(self.action_dim)(obs)
         return obs
 
+
 class Actor_MLP_Continuous(nn.Module):
     action_dim: int
     num_layers: int = 2
     neurons_per_layer: int = 256
-    
+
     @nn.compact
     def __call__(self, obs: jnp.ndarray, **kwargs):
         x = obs
